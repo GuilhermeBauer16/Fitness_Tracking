@@ -1,0 +1,50 @@
+version: '3.9'
+services:
+  db:
+    image: mysql:8.3.0
+    container_name: mysql_db
+    command: mysqld --default_authentication_plugin=mysql_native_password
+
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: fitness
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: ${DB_PORT}
+
+    ports:
+      - ${DB_PORT}
+
+    expose:
+      - ${DB_PORT}
+
+    networks:
+      - fitness_tracking_network
+
+  fitness_tracking:
+
+    image: guilhermebauer/fitness_tracking
+    container_name: fitness_tracking_app
+#    build: .
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:${DB_PORT}/${DB_NAME}?useSSL=false&useTimezone=true&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - db
+
+    networks:
+      - fitness_tracking_network
+
+networks:
+  fitness_tracking_network:
+    driver: bridge
