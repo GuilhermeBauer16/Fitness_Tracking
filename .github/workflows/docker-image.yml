@@ -34,8 +34,8 @@ jobs:
       
     - name: Push to Docker Hub Container Registry
       run: |
-        docker tag docker-from-zero-to-mastery-java:latest ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:latest
-        docker tag docker-from-zero-to-mastery-java:latest ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:${{ github.run_id }}
+        docker tag fitness_tracking:latest ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
+        docker tag fitness_tracking:latest ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:${{ github.run_id }}
         
-        docker push ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:${{ github.run_id }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:${{ github.run_id }}
