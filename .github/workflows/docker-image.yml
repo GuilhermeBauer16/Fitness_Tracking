@@ -1,0 +1,41 @@
+name: Continuous Integration with Github, Github Actions, and Docker Hub
+
+on:
+  push:
+    branches: "main" 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3.2.0
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Setup Java JDK
+      uses: actions/setup-java@v4.2.1
+      with:
+        java-version: '21'
+        distribution: 'adopt'
+        cache: maven
+        
+    - name: Build Application Jar
+      working-directory: ./app
+      run: mvn clean package
+      
+    - name: Docker Compose Build 
+      working-directory: .
+      run: docker compose build
+      
+    - name: Push to Docker Hub Container Registry
+      run: |
+        docker tag docker-from-zero-to-mastery-java:latest ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:latest
+        docker tag docker-from-zero-to-mastery-java:latest ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:${{ github.run_id }}
+        
+        docker push ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:${{ github.run_id }}
