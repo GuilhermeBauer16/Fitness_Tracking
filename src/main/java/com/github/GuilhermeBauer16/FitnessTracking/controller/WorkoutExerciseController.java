@@ -4,11 +4,15 @@ import com.github.GuilhermeBauer16.FitnessTracking.controller.contract.CrudContr
 import com.github.GuilhermeBauer16.FitnessTracking.service.WorkoutExerciseService;
 import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -45,8 +49,8 @@ public class WorkoutExerciseController implements CrudControllerContract<Workout
 
     @Override
     @GetMapping
-    public ResponseEntity<List<WorkoutExerciseVO>> findAll() {
-        List<WorkoutExerciseVO> workoutExerciseVOList = service.findAll();
+    public ResponseEntity<Page<WorkoutExerciseVO>> findAll(@PageableDefault(sort = "name", size = 20) final Pageable pageable) {
+        Page<WorkoutExerciseVO> workoutExerciseVOList = service.findAll(pageable);
         return ResponseEntity.ok(workoutExerciseVOList);
     }
 

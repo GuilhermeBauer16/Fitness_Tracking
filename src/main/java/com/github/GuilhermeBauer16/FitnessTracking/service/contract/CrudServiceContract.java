@@ -1,6 +1,8 @@
 package com.github.GuilhermeBauer16.FitnessTracking.service.contract;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 public interface CrudServiceContract<T, I> {
 
@@ -10,7 +12,7 @@ public interface CrudServiceContract<T, I> {
 
     T findById(I id);
 
-    List<T> findAll();
+    Page<T> findAll(final Pageable pageable);
 
     void delete(I id);
 }

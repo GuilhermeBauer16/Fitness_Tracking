@@ -5,11 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-public class UuidUtilsException extends RuntimeException {
+public class ValidationUtilsException extends RuntimeException {
 
-    public static final ExceptionDetails ERROR = ExceptionDetails.INVALID_UUID_FORMAT_MESSAGE;
+    public static final ExceptionDetails ERROR = ExceptionDetails.EXCEPTION_TYPE_NOT_THROWN;
 
-    public UuidUtilsException(String message) {
-        super(ERROR.formatErrorMessage(message));
+    public ValidationUtilsException(String message, Throwable cause) {
+        super(ERROR.formatErrorMessage(message), cause);
     }
 }

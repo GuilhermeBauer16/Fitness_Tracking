@@ -18,12 +18,6 @@ spring:
 
     show-sql: false
 
-springdoc:
-  pathsToMatch:
-    -/product/v1/**
-    -/category/v1/**
-    -/cartItems/v1/**
-
   logging:
     level:
       org.springframework.security: DEBUG
