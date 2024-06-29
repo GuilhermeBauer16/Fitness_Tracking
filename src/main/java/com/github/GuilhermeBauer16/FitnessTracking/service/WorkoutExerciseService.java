@@ -1,11 +1,11 @@
 package com.github.GuilhermeBauer16.FitnessTracking.service;
 
+import com.github.GuilhermeBauer16.FitnessTracking.exception.FieldNotFound;
 import com.github.GuilhermeBauer16.FitnessTracking.exception.WorkoutExerciseNotFound;
 import com.github.GuilhermeBauer16.FitnessTracking.mapper.Mapper;
 import com.github.GuilhermeBauer16.FitnessTracking.model.WorkoutExerciseEntity;
 import com.github.GuilhermeBauer16.FitnessTracking.repository.WorkoutExerciseRepository;
 import com.github.GuilhermeBauer16.FitnessTracking.service.contract.CrudServiceContract;
-import com.github.GuilhermeBauer16.FitnessTracking.utils.CheckIfNotNull;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.UuidUtils;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.ValidatorUtils;
 import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
@@ -46,6 +46,7 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
         workoutExerciseVO.setId(UuidUtils.generateUuid());
         UuidUtils.isValidUuid(workoutExerciseVO.getId());
         WorkoutExerciseEntity entity = workoutExerciseEntityMapper.parseObject(workoutExerciseVO);
+        ValidatorUtils.checkNotNullAndNotEmptyOrThrowException(entity, WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, FieldNotFound.class);
         workoutExerciseVOMapper.parseObject(repository.save(entity));
 
         return workoutExerciseVOMapper.parseObject(repository.save(entity));
@@ -61,9 +62,12 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
         WorkoutExerciseEntity workoutExerciseEntity = repository.findById(workoutExerciseVO.getId())
                 .orElseThrow(() -> new WorkoutExerciseNotFound(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE));
 
-        ValidatorUtils.checkNotNullAndNotEmptyOrThrowException(workoutExerciseEntity,
+        WorkoutExerciseEntity updatedEntity = ValidatorUtils.updateFieldIfNotNull(workoutExerciseEntity, workoutExerciseVO,
                 WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
-        WorkoutExerciseEntity updatedEntity = CheckIfNotNull.updateIfNotNull(workoutExerciseEntity, workoutExerciseVO);
+
+        ValidatorUtils.checkNotNullAndNotEmptyOrThrowException(updatedEntity,
+                WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, FieldNotFound.class);
+
 
         return workoutExerciseVOMapper.parseObject(repository.save(updatedEntity));
     }
@@ -75,7 +79,7 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
         WorkoutExerciseEntity workoutExerciseEntity = repository.findById(id)
                 .orElseThrow(() -> new WorkoutExerciseNotFound(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE));
         ValidatorUtils.checkNotNullAndNotEmptyOrThrowException(workoutExerciseEntity,
-                WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
+                WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, FieldNotFound.class);
         return workoutExerciseVOMapper.parseObject(workoutExerciseEntity);
 
     }
@@ -85,16 +89,13 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
 
         Page<WorkoutExerciseEntity> all = repository.findAll(pageable);
         List<WorkoutExerciseVO> workoutExerciseVOList = workoutExerciseVOMapper.parseObjectList(all.getContent());
-        checkIfWorkoutExerciseIsEmpty(workoutExerciseVOList);
+        if( workoutExerciseVOList.isEmpty()){
+            throw new WorkoutExerciseNotFound(WORKOUT_EXERCISE_LIST_NOT_FOUND_MESSAGE);
+        }
         return new PageImpl<>( workoutExerciseVOList,pageable, all.getTotalElements());
 
     }
 
-    private static void checkIfWorkoutExerciseIsEmpty(List<WorkoutExerciseVO> workoutExerciseVOList) {
-        if( workoutExerciseVOList.isEmpty()){
-            throw new WorkoutExerciseNotFound(WORKOUT_EXERCISE_LIST_NOT_FOUND_MESSAGE);
-        }
-    }
 
     @Override
     public void delete(String id) {
@@ -102,8 +103,7 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
         UuidUtils.isValidUuid(id);
         WorkoutExerciseEntity workoutExerciseEntity = repository.findById(id)
                 .orElseThrow(() -> new WorkoutExerciseNotFound(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE));
-        ValidatorUtils.checkNotNullAndNotEmptyOrThrowException(workoutExerciseEntity,
-                WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
+
         repository.delete(workoutExerciseEntity);
 
     }
