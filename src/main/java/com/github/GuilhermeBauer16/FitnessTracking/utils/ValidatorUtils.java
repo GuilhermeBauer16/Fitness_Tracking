@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 public class ValidatorUtils {
 
 
-    public static <T> void checkNotNullAndNotEmptyOrThrowException(T target, String errorMessage, Class<? extends RuntimeException> customException) {
+    public static <T> void checkFieldNotNullAndNotEmptyOrThrowException(T target, String errorMessage, Class<? extends RuntimeException> customException) {
 
         if (target == null) {
             throwException(errorMessage, customException);
@@ -39,6 +39,14 @@ public class ValidatorUtils {
             }
         }
 
+
+    }
+
+    public static <T> void checkObjectOrThrowException(T target, String errorMessage, Class<? extends RuntimeException> customException) {
+
+        if (target == null) {
+            throwException(errorMessage, customException);
+        }
 
     }
 

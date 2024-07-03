@@ -6,8 +6,7 @@ import java.util.UUID;
 
 public class UuidUtils {
 
-    public static final String INVALID_UUID_ERROR = "The UUID [{}] informed is invalid!";
-    public static final String UUID_REQUIRED = "An UUID need to be informed! ";
+    public static final String UUID_REQUIRED = "An UUID need to be informed!";
 
     public static String generateUuid() {
         return UUID.randomUUID().toString();

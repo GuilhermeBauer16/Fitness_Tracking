@@ -1,7 +1,5 @@
 package com.github.GuilhermeBauer16.FitnessTracking.mapper;
 
-import com.github.GuilhermeBauer16.FitnessTracking.model.WorkoutExerciseEntity;
-import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;

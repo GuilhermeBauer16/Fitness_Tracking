@@ -30,6 +30,17 @@ public class WorkoutExerciseVO {
     public WorkoutExerciseVO() {
     }
 
+    public WorkoutExerciseVO(String id, String name, String description, Integer caloriesBurned, ExerciseType exerciseType, String equipmentNeeded, DifficultyLevel difficultyLevel, Set<MuscleGroup> muscleGroups) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.caloriesBurned = caloriesBurned;
+        this.exerciseType = exerciseType;
+        this.equipmentNeeded = equipmentNeeded;
+        this.difficultyLevel = difficultyLevel;
+        this.muscleGroups = muscleGroups;
+    }
+
     public String getId() {
         return id;
     }

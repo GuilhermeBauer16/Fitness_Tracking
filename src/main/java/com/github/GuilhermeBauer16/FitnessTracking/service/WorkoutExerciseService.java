@@ -22,10 +22,10 @@ import java.util.List;
 @Service
 public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerciseVO, String> {
 
-    private static final Mapper<WorkoutExerciseEntity, WorkoutExerciseVO> workoutExerciseVOMapper =
+    private final Mapper<WorkoutExerciseEntity, WorkoutExerciseVO> workoutExerciseVOMapper =
             new Mapper<>(WorkoutExerciseEntity.class, WorkoutExerciseVO.class);
 
-    private static final Mapper<WorkoutExerciseVO, WorkoutExerciseEntity> workoutExerciseEntityMapper =
+    private final Mapper<WorkoutExerciseVO, WorkoutExerciseEntity> workoutExerciseEntityMapper =
             new Mapper<>(WorkoutExerciseVO.class, WorkoutExerciseEntity.class);
 
     private static final String WORKOUT_EXERCISE_NOT_FOUND_MESSAGE = "Can not be find that Workout exercise!";
@@ -43,10 +43,12 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
     @Transactional
     public WorkoutExerciseVO create(WorkoutExerciseVO workoutExerciseVO) {
 
+        ValidatorUtils.checkObjectOrThrowException(workoutExerciseVO, WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
+
         workoutExerciseVO.setId(UuidUtils.generateUuid());
-        UuidUtils.isValidUuid(workoutExerciseVO.getId());
+
         WorkoutExerciseEntity entity = workoutExerciseEntityMapper.parseObject(workoutExerciseVO);
-        ValidatorUtils.checkNotNullAndNotEmptyOrThrowException(entity, WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, FieldNotFound.class);
+        ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(entity, WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, FieldNotFound.class);
         workoutExerciseVOMapper.parseObject(repository.save(entity));
 
         return workoutExerciseVOMapper.parseObject(repository.save(entity));
@@ -58,6 +60,8 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
     @Transactional
     public WorkoutExerciseVO update(WorkoutExerciseVO workoutExerciseVO) {
 
+        ValidatorUtils.checkObjectOrThrowException(workoutExerciseVO, WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
+
         UuidUtils.isValidUuid(workoutExerciseVO.getId());
         WorkoutExerciseEntity workoutExerciseEntity = repository.findById(workoutExerciseVO.getId())
                 .orElseThrow(() -> new WorkoutExerciseNotFound(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE));
@@ -65,11 +69,11 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
         WorkoutExerciseEntity updatedEntity = ValidatorUtils.updateFieldIfNotNull(workoutExerciseEntity, workoutExerciseVO,
                 WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
 
-        ValidatorUtils.checkNotNullAndNotEmptyOrThrowException(updatedEntity,
+        ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(updatedEntity,
                 WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, FieldNotFound.class);
 
-
-        return workoutExerciseVOMapper.parseObject(repository.save(updatedEntity));
+        WorkoutExerciseEntity savedEntity = repository.save(updatedEntity);
+        return workoutExerciseVOMapper.parseObject(savedEntity);
     }
 
     @Override
@@ -78,7 +82,7 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
         UuidUtils.isValidUuid(id);
         WorkoutExerciseEntity workoutExerciseEntity = repository.findById(id)
                 .orElseThrow(() -> new WorkoutExerciseNotFound(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE));
-        ValidatorUtils.checkNotNullAndNotEmptyOrThrowException(workoutExerciseEntity,
+        ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(workoutExerciseEntity,
                 WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, FieldNotFound.class);
         return workoutExerciseVOMapper.parseObject(workoutExerciseEntity);
 
@@ -89,10 +93,7 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
 
         Page<WorkoutExerciseEntity> all = repository.findAll(pageable);
         List<WorkoutExerciseVO> workoutExerciseVOList = workoutExerciseVOMapper.parseObjectList(all.getContent());
-        if( workoutExerciseVOList.isEmpty()){
-            throw new WorkoutExerciseNotFound(WORKOUT_EXERCISE_LIST_NOT_FOUND_MESSAGE);
-        }
-        return new PageImpl<>( workoutExerciseVOList,pageable, all.getTotalElements());
+        return new PageImpl<>(workoutExerciseVOList, pageable, all.getTotalElements());
 
     }
 
