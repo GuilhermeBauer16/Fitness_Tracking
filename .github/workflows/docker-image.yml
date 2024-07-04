@@ -2,7 +2,7 @@ name: Continuous Integration with Github, Github Actions, and Docker Hub
 
 on:
   push:
-    branches: "main" 
+    branches: "main"
 
 jobs:
   build:
@@ -32,6 +32,9 @@ jobs:
       working-directory: .
       run: docker compose build
       
+    - name: List Docker Images
+      run: docker images
+
     - name: Push to Docker Hub Container Registry
       run: |
         docker tag fitness_tracking:latest ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
