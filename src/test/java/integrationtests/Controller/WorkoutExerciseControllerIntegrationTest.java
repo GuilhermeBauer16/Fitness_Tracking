@@ -191,7 +191,7 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
                 .body()
                 .asString();
 
-        System.out.println(content); // Print the JSON response content
+        System.out.println(content);
 
         PaginatedResponse<WorkoutExerciseVO> paginatedResponse = objectMapper.readValue(content, new TypeReference<PaginatedResponse<WorkoutExerciseVO>>() {});
         List<WorkoutExerciseVO> workoutExerciseVOList = paginatedResponse.getContent();
