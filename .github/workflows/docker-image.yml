@@ -35,13 +35,11 @@ jobs:
     - name: List Docker Images
       run: docker images
 
-    - name: Tag Docker Image
+    - name: Push to Docker Hub Container Registry
       run: |
-        docker tag ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
-        docker tag ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:${{ github.run_id }}
-        
-    - name: Push Docker Image to Registry
-      run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:${{ github.run_id }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:${{ github.run_id }}
+          
+          docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:${{ github.run_id }}
 
