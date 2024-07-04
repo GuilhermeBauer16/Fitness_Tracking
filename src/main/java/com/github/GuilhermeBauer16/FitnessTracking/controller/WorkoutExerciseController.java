@@ -5,6 +5,7 @@ import com.github.GuilhermeBauer16.FitnessTracking.service.WorkoutExerciseServic
 import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class WorkoutExerciseController implements CrudControllerContract<Workout
     @Operation(summary = "Register a new Workout exercise", description = "Returns a created Workout exercise")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successful operation",
-                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    content = @Content(schema = @Schema(implementation = WorkoutExerciseVO.class))),
             @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Workout Exercise Not Found Exception" +
                     " or Field Not Found Exception, depending of the situation"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -49,7 +50,7 @@ public class WorkoutExerciseController implements CrudControllerContract<Workout
     @Operation(summary = "Update a Workout exercise", description = "Returns a updated Workout exercise")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    content = @Content(schema = @Schema(implementation = WorkoutExerciseVO.class))),
             @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Workout Exercise Not Found Exception" +
                     " or Field Not Found Exception, depending of the situation"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -66,7 +67,7 @@ public class WorkoutExerciseController implements CrudControllerContract<Workout
     @Operation(summary = "Get a single Workout exercise", description = "Returns a Workout exercise")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    content = @Content(schema = @Schema(implementation = WorkoutExerciseVO.class))),
             @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Workout Exercise Not Found Exception"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
 
@@ -82,7 +83,7 @@ public class WorkoutExerciseController implements CrudControllerContract<Workout
     @Operation(summary = "Get a Workout exercise list", description = "Returns a list of Workout exercise")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+                    content = @Content(schema = @Schema(implementation = WorkoutExerciseVO.class))),
             @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Workout Exercise Not Found Exception"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
 
