@@ -1,9 +1,6 @@
 package com.github.GuilhermeBauer16.FitnessTracking.handler;
 
-import com.github.GuilhermeBauer16.FitnessTracking.exception.ExceptionResponse;
-import com.github.GuilhermeBauer16.FitnessTracking.exception.UuidUtilsException;
-import com.github.GuilhermeBauer16.FitnessTracking.exception.FieldNotFound;
-import com.github.GuilhermeBauer16.FitnessTracking.exception.WorkoutExerciseNotFound;
+import com.github.GuilhermeBauer16.FitnessTracking.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,7 +15,8 @@ import java.util.Date;
 public class CustomizedResponseEntityExceptionHandler {
 
     @ExceptionHandler({WorkoutExerciseNotFound.class,
-    FieldNotFound.class})
+            FieldNotFound.class,
+            PersonalizedWorkoutTrainingNotFound.class})
     public final ResponseEntity<ExceptionResponse> handlerNotFoundException(
             Exception ex,
             WebRequest webRequest
@@ -28,7 +26,7 @@ public class CustomizedResponseEntityExceptionHandler {
                 webRequest.getDescription(false),
                 new Date()
         );
-        return new ResponseEntity<>(exceptionResponse,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
 
     }
 
@@ -42,7 +40,7 @@ public class CustomizedResponseEntityExceptionHandler {
                 webRequest.getDescription(false),
                 new Date()
         );
-        return new ResponseEntity<>(exceptionResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 //

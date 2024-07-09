@@ -5,7 +5,7 @@ import com.github.GuilhermeBauer16.FitnessTracking.exception.WorkoutExerciseNotF
 import com.github.GuilhermeBauer16.FitnessTracking.mapper.Mapper;
 import com.github.GuilhermeBauer16.FitnessTracking.model.WorkoutExerciseEntity;
 import com.github.GuilhermeBauer16.FitnessTracking.repository.WorkoutExerciseRepository;
-import com.github.GuilhermeBauer16.FitnessTracking.service.contract.CrudServiceContract;
+import com.github.GuilhermeBauer16.FitnessTracking.service.contract.WorkoutExerciseServiceContract;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.UuidUtils;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.ValidatorUtils;
 import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
@@ -20,7 +20,7 @@ import java.util.List;
 
 
 @Service
-public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerciseVO, String> {
+public class WorkoutExerciseService implements WorkoutExerciseServiceContract<WorkoutExerciseVO, String> {
 
     private final Mapper<WorkoutExerciseEntity, WorkoutExerciseVO> workoutExerciseVOMapper =
             new Mapper<>(WorkoutExerciseEntity.class, WorkoutExerciseVO.class);
@@ -95,6 +95,25 @@ public class WorkoutExerciseService implements CrudServiceContract<WorkoutExerci
         List<WorkoutExerciseVO> workoutExerciseVOList = workoutExerciseVOMapper.parseObjectList(all.getContent());
         return new PageImpl<>(workoutExerciseVOList, pageable, all.getTotalElements());
 
+    }
+
+    @Override
+    public List<WorkoutExerciseVO> findByMuscleGroup(WorkoutExerciseVO workoutExerciseVO) {
+
+        WorkoutExerciseEntity workoutExerciseEntity = workoutExerciseEntityMapper.parseObject(workoutExerciseVO);
+        List<WorkoutExerciseEntity> byMuscleGroups = repository.findByMuscleGroups(workoutExerciseEntity.getMuscleGroups());
+        List<WorkoutExerciseVO> workoutExerciseVOList = workoutExerciseVOMapper.parseObjectList(byMuscleGroups);
+
+        return workoutExerciseVOList;
+    }
+
+    @Override
+    public List<WorkoutExerciseVO> findByDifficultLevel(WorkoutExerciseVO workoutExerciseVO) {
+
+        WorkoutExerciseEntity workoutExerciseEntity = workoutExerciseEntityMapper.parseObject(workoutExerciseVO);
+        List<WorkoutExerciseEntity> byDifficultLevel = repository.findByDifficultLevel(workoutExerciseEntity.getDifficultyLevel());
+        List<WorkoutExerciseVO> workoutExerciseVOList = workoutExerciseVOMapper.parseObjectList(byDifficultLevel);
+        return workoutExerciseVOList;
     }
 
 
