@@ -1,6 +1,6 @@
 package com.github.GuilhermeBauer16.FitnessTracking.controller.contract;
 
-import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

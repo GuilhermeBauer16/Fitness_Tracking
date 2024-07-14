@@ -2,7 +2,7 @@ package com.github.GuilhermeBauer16.FitnessTracking.controller;
 
 import com.github.GuilhermeBauer16.FitnessTracking.controller.contract.PersonalizedWorkoutTrainingControllerContract;
 import com.github.GuilhermeBauer16.FitnessTracking.service.PersonalizedWorkoutTrainingService;
-import com.github.GuilhermeBauer16.FitnessTracking.vo.PersonalizedWorkoutTrainingVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.PersonalizedWorkoutTrainingVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/personalizedWorkout")
@@ -37,6 +39,18 @@ public class PersonalizedWorkoutTrainingController implements PersonalizedWorkou
     public ResponseEntity<PersonalizedWorkoutTrainingVO> findById(String id) {
         PersonalizedWorkoutTrainingVO byId = service.findById(id);
         return ResponseEntity.ok(byId);
+    }
+
+    @Override
+    public ResponseEntity<List<PersonalizedWorkoutTrainingVO>> workoutExercisesByMuscleGroup
+            (PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
+        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = service.workoutExercisesByMuscleGroup(personalizedWorkoutTrainingVO);
+        return ResponseEntity.ok(personalizedWorkoutTrainingVOS);
+    }
+
+    @Override
+    public ResponseEntity<List<PersonalizedWorkoutTrainingVO>> workoutExercisesByDifficultLevel(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
+        return ResponseEntity.ok(List.of());
     }
 
     @Override

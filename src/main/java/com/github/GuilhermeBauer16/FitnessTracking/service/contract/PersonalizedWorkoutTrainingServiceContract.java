@@ -14,6 +14,10 @@ public interface PersonalizedWorkoutTrainingServiceContract<T, I> {
 
     T findById(I id);
 
+    List<T> workoutExercisesByMuscleGroup(T t);
+
+    List<T> workoutExercisesByDifficultLevel(T t);
+
     Page<T> findAll(final Pageable pageable);
 
     void delete(I id);

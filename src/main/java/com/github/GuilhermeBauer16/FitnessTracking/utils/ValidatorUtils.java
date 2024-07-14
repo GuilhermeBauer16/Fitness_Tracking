@@ -42,7 +42,7 @@ public class ValidatorUtils {
 
     }
 
-    public static <T> void checkObjectOrThrowException(T target, String errorMessage, Class<? extends RuntimeException> customException) {
+    public static <T> void checkObjectIsNullOrThrowException(T target, String errorMessage, Class<? extends RuntimeException> customException) {
 
         if (target == null) {
             throwException(errorMessage, customException);

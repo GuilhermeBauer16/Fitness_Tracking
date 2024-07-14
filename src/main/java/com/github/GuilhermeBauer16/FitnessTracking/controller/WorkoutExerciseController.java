@@ -2,7 +2,7 @@ package com.github.GuilhermeBauer16.FitnessTracking.controller;
 
 import com.github.GuilhermeBauer16.FitnessTracking.controller.contract.WorkoutExerciseControllerContract;
 import com.github.GuilhermeBauer16.FitnessTracking.service.WorkoutExerciseService;
-import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

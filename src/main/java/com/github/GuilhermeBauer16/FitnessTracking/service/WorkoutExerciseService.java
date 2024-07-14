@@ -8,7 +8,7 @@ import com.github.GuilhermeBauer16.FitnessTracking.repository.WorkoutExerciseRep
 import com.github.GuilhermeBauer16.FitnessTracking.service.contract.WorkoutExerciseServiceContract;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.UuidUtils;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.ValidatorUtils;
-import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,7 +43,7 @@ public class WorkoutExerciseService implements WorkoutExerciseServiceContract<Wo
     @Transactional
     public WorkoutExerciseVO create(WorkoutExerciseVO workoutExerciseVO) {
 
-        ValidatorUtils.checkObjectOrThrowException(workoutExerciseVO, WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
+        ValidatorUtils.checkObjectIsNullOrThrowException(workoutExerciseVO, WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
 
         workoutExerciseVO.setId(UuidUtils.generateUuid());
 
@@ -60,7 +60,7 @@ public class WorkoutExerciseService implements WorkoutExerciseServiceContract<Wo
     @Transactional
     public WorkoutExerciseVO update(WorkoutExerciseVO workoutExerciseVO) {
 
-        ValidatorUtils.checkObjectOrThrowException(workoutExerciseVO, WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
+        ValidatorUtils.checkObjectIsNullOrThrowException(workoutExerciseVO, WORKOUT_EXERCISE_NOT_FOUND_MESSAGE, WorkoutExerciseNotFound.class);
 
         UuidUtils.isValidUuid(workoutExerciseVO.getId());
         WorkoutExerciseEntity workoutExerciseEntity = repository.findById(workoutExerciseVO.getId())

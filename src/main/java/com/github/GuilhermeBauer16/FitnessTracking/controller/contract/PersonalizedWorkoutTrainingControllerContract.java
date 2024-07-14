@@ -1,7 +1,7 @@
 package com.github.GuilhermeBauer16.FitnessTracking.controller.contract;
 
-import com.github.GuilhermeBauer16.FitnessTracking.vo.PersonalizedWorkoutTrainingVO;
-import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.PersonalizedWorkoutTrainingVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,11 +20,12 @@ public interface PersonalizedWorkoutTrainingControllerContract<T, I> {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
 
-    @Operation(summary = "Register a new Workout exercise", description = "Returns a created Workout exercise")
+    @Operation(summary = "Register a new Personalized workout training", description = "That method will use a POST to " +
+            "Returns a created Personalized workout training")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successful operation",
                     content = @Content(schema = @Schema(implementation = PersonalizedWorkoutTrainingVO.class))),
-            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Workout Exercise Not Found Exception" +
+            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Personalized Workout Training Not Found" +
                     " or Field Not Found Exception, depending of the situation"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
 
@@ -34,11 +35,11 @@ public interface PersonalizedWorkoutTrainingControllerContract<T, I> {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
 
-    @Operation(summary = "Update a Workout exercise", description = "Returns a updated Workout exercise")
+    @Operation(summary = "Update a Personalized workout training", description = "Returns a updated Workout exercise")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = @Content(schema = @Schema(implementation = PersonalizedWorkoutTrainingVO.class))),
-            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Workout Exercise Not Found Exception" +
+            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Personalized Workout Training Not Found" +
                     " or Field Not Found Exception, depending of the situation"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
 
@@ -47,34 +48,42 @@ public interface PersonalizedWorkoutTrainingControllerContract<T, I> {
 
     @GetMapping(value = "/{id}")
 
-    @Operation(summary = "Get a single Workout exercise", description = "Returns a Workout exercise")
+    @Operation(summary = "Get a single Personalized workout training", description = "Returns a Workout exercise")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = @Content(schema = @Schema(implementation = PersonalizedWorkoutTrainingVO.class))),
-            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Workout Exercise Not Found Exception"),
+            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Personalized Workout Training Not Found" +
+                    " or Field Not Found Exception, depending of the situation"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
 
     })
     ResponseEntity<T> findById(@PathVariable(value = "id") I id);
 
     @GetMapping
-    @Operation(summary = "Get a Workout exercise list", description = "Returns a list of Workout exercise")
+    @Operation(summary = "Get a Personalized workout training list", description = "Returns a list of Workout exercise")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(schema = @Schema(implementation = WorkoutExerciseVO.class))),
-            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Workout Exercise Not Found Exception"),
+                    content = @Content(schema = @Schema(implementation = PersonalizedWorkoutTrainingVO.class))),
+            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Personalized Workout Training Not Found" +
+                    " or Field Not Found Exception, depending of the situation"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
 
     })
     ResponseEntity<Page<T>> findAll(final Pageable pageable);
 
+    @GetMapping("/findByMuscleGroup")
+    ResponseEntity<List<T>> workoutExercisesByMuscleGroup(@RequestBody T t);
+
+    ResponseEntity<List<T>> workoutExercisesByDifficultLevel(T t);
+
 
     @DeleteMapping(value = "/{id}")
-    @Operation(summary = "Delete a Workout exercise list")
+    @Operation(summary = "Delete a Personalized workout training")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Successful operation, the Workout exercise was deleted",
-                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
-            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Workout Exercise Not Found Exception"),
+            @ApiResponse(responseCode = "204", description = "Successful operation, the Personalized workout training was deleted",
+                    content = @Content(schema = @Schema(implementation = PersonalizedWorkoutTrainingVO.class))),
+            @ApiResponse(responseCode = "404", description = "Will throw a custom exception: Personalized Workout Training Not Found" +
+                    " or Field Not Found Exception, depending of the situation"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
 
     })

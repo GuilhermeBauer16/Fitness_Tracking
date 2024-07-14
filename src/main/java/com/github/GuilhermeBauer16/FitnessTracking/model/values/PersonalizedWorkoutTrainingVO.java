@@ -1,9 +1,6 @@
-package com.github.GuilhermeBauer16.FitnessTracking.vo;
+package com.github.GuilhermeBauer16.FitnessTracking.model.values;
 
 import com.github.GuilhermeBauer16.FitnessTracking.model.WorkoutExerciseEntity;
-import jakarta.persistence.*;
-
-import java.util.Set;
 
 
 public class PersonalizedWorkoutTrainingVO {
