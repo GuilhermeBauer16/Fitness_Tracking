@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/personalizedWorkout")
-public class PersonalizedWorkoutTrainingController implements PersonalizedWorkoutTrainingControllerContract<PersonalizedWorkoutTrainingVO,String> {
+public class PersonalizedWorkoutTrainingController implements PersonalizedWorkoutTrainingControllerContract<PersonalizedWorkoutTrainingVO, String> {
 
     @Autowired
     private PersonalizedWorkoutTrainingService service;
@@ -41,22 +41,29 @@ public class PersonalizedWorkoutTrainingController implements PersonalizedWorkou
         return ResponseEntity.ok(byId);
     }
 
-    @Override
-    public ResponseEntity<List<PersonalizedWorkoutTrainingVO>> workoutExercisesByMuscleGroup
-            (PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
-        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = service.workoutExercisesByMuscleGroup(personalizedWorkoutTrainingVO);
-        return ResponseEntity.ok(personalizedWorkoutTrainingVOS);
-    }
-
-    @Override
-    public ResponseEntity<List<PersonalizedWorkoutTrainingVO>> workoutExercisesByDifficultLevel(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
-        return ResponseEntity.ok(List.of());
-    }
 
     @Override
     public ResponseEntity<Page<PersonalizedWorkoutTrainingVO>> findAll(@PageableDefault(sort = "repetitions", size = 20) Pageable pageable) {
         Page<PersonalizedWorkoutTrainingVO> all = service.findAll(pageable);
         return ResponseEntity.ok(all);
+    }
+
+    @Override
+    public ResponseEntity<List<PersonalizedWorkoutTrainingVO>> findPersonalizedWorkoutTrainingByMuscleGroup(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
+        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = service.findPersonalizedWorkoutTrainingByMuscleGroup(personalizedWorkoutTrainingVO);
+        return ResponseEntity.ok(personalizedWorkoutTrainingVOS);
+    }
+
+    @Override
+    public ResponseEntity<List<PersonalizedWorkoutTrainingVO>> findPersonalizedWorkoutTrainingByDifficultLevel(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
+        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = service.findPersonalizedWorkoutTrainingByDifficultLevel(personalizedWorkoutTrainingVO);
+        return ResponseEntity.ok(personalizedWorkoutTrainingVOS);
+    }
+
+    @Override
+    public ResponseEntity<List<PersonalizedWorkoutTrainingVO>> findPersonalizedWorkoutTrainingByName(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
+        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = service.findPersonalizedWorkoutTrainingByName(personalizedWorkoutTrainingVO);
+        return ResponseEntity.ok(personalizedWorkoutTrainingVOS);
     }
 
     @Override

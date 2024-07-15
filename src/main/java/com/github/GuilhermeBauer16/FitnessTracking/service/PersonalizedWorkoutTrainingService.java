@@ -86,7 +86,7 @@ public class PersonalizedWorkoutTrainingService implements PersonalizedWorkoutTr
         try {
             PersonalizedWorkoutTrainingEntity updatedpersonalizedWorkoutTrainingEntity = ValidatorUtils.
                     updateFieldIfNotNull(personalizedWorkoutTrainingEntity, personalizedWorkoutTrainingVO,
-                    PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE, PersonalizedWorkoutTrainingNotFound.class);
+                            PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE, PersonalizedWorkoutTrainingNotFound.class);
 
             ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(updatedpersonalizedWorkoutTrainingEntity,
                     PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE, FieldNotFound.class);
@@ -111,19 +111,35 @@ public class PersonalizedWorkoutTrainingService implements PersonalizedWorkoutTr
     }
 
     @Override
-    public List<PersonalizedWorkoutTrainingVO> workoutExercisesByMuscleGroup(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
-        WorkoutExerciseVO workoutExerciseVO = workoutExerciseVOMapper.parseObject(personalizedWorkoutTrainingVO.getWorkoutExerciseEntity());
-        List<PersonalizedWorkoutTrainingEntity> byMuscleGroup = repository.findByMuscleGroup(workoutExerciseVO.getMuscleGroups());
+    public List<PersonalizedWorkoutTrainingVO> findPersonalizedWorkoutTrainingByMuscleGroup(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
+
+        List<PersonalizedWorkoutTrainingEntity> byMuscleGroup = repository.findByMuscleGroup(
+                personalizedWorkoutTrainingVO.getWorkoutExerciseEntity().getMuscleGroups());
+
         List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = personalizedWorkoutTrainingVOMapper.parseObjectList(byMuscleGroup);
         return personalizedWorkoutTrainingVOS;
     }
 
+    @Override
+    public List<PersonalizedWorkoutTrainingVO> findPersonalizedWorkoutTrainingByDifficultLevel(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
 
+        List<PersonalizedWorkoutTrainingEntity> byMuscleGroup = repository.findByDifficultyLevel(
+                personalizedWorkoutTrainingVO.getWorkoutExerciseEntity().getDifficultyLevel());
+
+        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = personalizedWorkoutTrainingVOMapper.parseObjectList(byMuscleGroup);
+        return personalizedWorkoutTrainingVOS;
+    }
 
     @Override
-    public List<PersonalizedWorkoutTrainingVO> workoutExercisesByDifficultLevel(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
-        return List.of();
+    public List<PersonalizedWorkoutTrainingVO> findPersonalizedWorkoutTrainingByName(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
+
+        List<PersonalizedWorkoutTrainingEntity> byMuscleGroup = repository.
+                findByName(personalizedWorkoutTrainingVO.getWorkoutExerciseEntity().getName());
+
+        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = personalizedWorkoutTrainingVOMapper.parseObjectList(byMuscleGroup);
+        return personalizedWorkoutTrainingVOS;
     }
+
 
     @Override
     public Page<PersonalizedWorkoutTrainingVO> findAll(Pageable pageable) {

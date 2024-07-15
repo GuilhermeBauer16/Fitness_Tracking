@@ -71,10 +71,37 @@ public interface PersonalizedWorkoutTrainingControllerContract<T, I> {
     })
     ResponseEntity<Page<T>> findAll(final Pageable pageable);
 
-    @GetMapping("/findByMuscleGroup")
-    ResponseEntity<List<T>> workoutExercisesByMuscleGroup(@RequestBody T t);
 
-    ResponseEntity<List<T>> workoutExercisesByDifficultLevel(T t);
+    @GetMapping("/findByMuscleGroup")
+    @Operation(summary = "Get a Personalized workout training list filter by muscle group", description = "Returns a list of Personalized workout training" +
+            "with the specific muscle group that the user choose to filter")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation",
+                    content = @Content(schema = @Schema(implementation = PersonalizedWorkoutTrainingVO.class))),
+
+    })
+    ResponseEntity<List<T>> findPersonalizedWorkoutTrainingByMuscleGroup(@RequestBody T t);
+
+    @GetMapping("/findByDifficultLevel")
+    @Operation(summary = "Get a Personalized workout training list filter by difficult level", description = "Returns a list of Personalized workout training" +
+            "with the specific difficult level of the user choose to filter")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation",
+                    content = @Content(schema = @Schema(implementation = PersonalizedWorkoutTrainingVO.class))),
+
+    })
+    ResponseEntity<List<T>> findPersonalizedWorkoutTrainingByDifficultLevel(@RequestBody T t);
+
+    @GetMapping("/findByName")
+
+    @Operation(summary = "Get a Personalized workout training list filter by name", description = "Returns a list of Personalized workout training" +
+            "with the specific name of the user choose to filter")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation",
+                    content = @Content(schema = @Schema(implementation = PersonalizedWorkoutTrainingVO.class))),
+
+    })
+    ResponseEntity<List<T>> findPersonalizedWorkoutTrainingByName(@RequestBody T t);
 
 
     @DeleteMapping(value = "/{id}")

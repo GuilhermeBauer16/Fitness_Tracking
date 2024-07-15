@@ -1,5 +1,6 @@
 package com.github.GuilhermeBauer16.FitnessTracking.repository;
 
+import com.github.GuilhermeBauer16.FitnessTracking.enums.DifficultyLevel;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.MuscleGroup;
 import com.github.GuilhermeBauer16.FitnessTracking.model.PersonalizedWorkoutTrainingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,10 @@ public interface PersonalizedWorkoutTrainingRepository extends JpaRepository<Per
 
     @Query("SELECT p FROM PersonalizedWorkoutTrainingEntity p JOIN p.workoutExerciseEntity w JOIN w.muscleGroups mg WHERE mg IN :muscleGroups")
     List<PersonalizedWorkoutTrainingEntity> findByMuscleGroup(@Param("muscleGroups") Set<MuscleGroup> muscleGroup);
+
+    @Query("SELECT p FROM PersonalizedWorkoutTrainingEntity p JOIN p.workoutExerciseEntity w WHERE w.name = :name")
+    List<PersonalizedWorkoutTrainingEntity> findByName(@Param("name") String name);
+
+    @Query("SELECT p FROM PersonalizedWorkoutTrainingEntity p JOIN p.workoutExerciseEntity w WHERE w.difficultyLevel = :difficultyLevel")
+    List<PersonalizedWorkoutTrainingEntity> findByDifficultyLevel(@Param("difficultyLevel") DifficultyLevel difficultyLevel);
 }

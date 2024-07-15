@@ -14,9 +14,11 @@ public interface PersonalizedWorkoutTrainingServiceContract<T, I> {
 
     T findById(I id);
 
-    List<T> workoutExercisesByMuscleGroup(T t);
+    List<T> findPersonalizedWorkoutTrainingByMuscleGroup(T t);
 
-    List<T> workoutExercisesByDifficultLevel(T t);
+    List<T> findPersonalizedWorkoutTrainingByDifficultLevel(T t);
+
+    List<T> findPersonalizedWorkoutTrainingByName(T t);
 
     Page<T> findAll(final Pageable pageable);
 
