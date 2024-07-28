@@ -1,8 +1,8 @@
 package com.github.GuilhermeBauer16.FitnessTracking.controller;
 
 import com.github.GuilhermeBauer16.FitnessTracking.controller.contract.WorkoutExerciseControllerContract;
-import com.github.GuilhermeBauer16.FitnessTracking.service.WorkoutExerciseService;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
+import com.github.GuilhermeBauer16.FitnessTracking.service.WorkoutExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/workoutExercise")
@@ -44,19 +42,6 @@ public class WorkoutExerciseController implements WorkoutExerciseControllerContr
         return ResponseEntity.ok(workoutExerciseVO);
     }
 
-    @Override
-
-    public ResponseEntity<List<WorkoutExerciseVO>> findByMuscleGroup(@RequestBody WorkoutExerciseVO workoutExerciseVO) {
-        List<WorkoutExerciseVO> byMuscleGroup = service.findByMuscleGroup(workoutExerciseVO);
-        return ResponseEntity.ok(byMuscleGroup);
-    }
-
-    @Override
-
-    public ResponseEntity<List<WorkoutExerciseVO>> findByDifficultLevel(@RequestBody WorkoutExerciseVO workoutExerciseVO) {
-        List<WorkoutExerciseVO> byDifficultLevel = service.findByDifficultLevel(workoutExerciseVO);
-        return ResponseEntity.ok(byDifficultLevel);
-    }
 
     @Override
 
@@ -67,7 +52,7 @@ public class WorkoutExerciseController implements WorkoutExerciseControllerContr
 
     @Override
 
-    public ResponseEntity<?> delete(@PathVariable(value = "id") String id) {
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -10,9 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public interface WorkoutExerciseControllerContract<T, I> {
 
@@ -56,11 +58,6 @@ public interface WorkoutExerciseControllerContract<T, I> {
     })
     ResponseEntity<T> findById(I id);
 
-    @GetMapping("/muscleGroup")
-    ResponseEntity<List<T>> findByMuscleGroup(@RequestBody T t);
-
-    @GetMapping("/difficultLevel")
-    ResponseEntity<List<T>> findByDifficultLevel(@RequestBody T t);
 
     @GetMapping
     @Operation(summary = "Get a Workout exercise list", description = "Returns a list of Workout exercise")
@@ -83,5 +80,5 @@ public interface WorkoutExerciseControllerContract<T, I> {
             @ApiResponse(responseCode = "500", description = "Internal server error")
 
     })
-    ResponseEntity<?> delete(I id);
+    ResponseEntity<Void> delete(I id);
 }

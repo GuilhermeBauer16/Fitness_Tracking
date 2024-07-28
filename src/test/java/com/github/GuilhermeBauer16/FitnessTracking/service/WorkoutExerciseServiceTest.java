@@ -1,17 +1,15 @@
-package com.github.GuilhermeBauer16.FitnessTracking.workoutExerciseTest;
+package com.github.GuilhermeBauer16.FitnessTracking.service;
 
 import com.github.GuilhermeBauer16.FitnessTracking.enums.DifficultyLevel;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.ExerciseType;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.MuscleGroup;
 import com.github.GuilhermeBauer16.FitnessTracking.exception.UuidUtilsException;
 import com.github.GuilhermeBauer16.FitnessTracking.exception.WorkoutExerciseNotFound;
-import com.github.GuilhermeBauer16.FitnessTracking.mapper.Mapper;
 import com.github.GuilhermeBauer16.FitnessTracking.model.WorkoutExerciseEntity;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import com.github.GuilhermeBauer16.FitnessTracking.repository.WorkoutExerciseRepository;
-import com.github.GuilhermeBauer16.FitnessTracking.service.WorkoutExerciseService;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.UuidUtils;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.ValidatorUtils;
-import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,22 +23,27 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class WorkoutExerciseServiceTest {
 
     @Mock
     private WorkoutExerciseRepository repository;
-
-    @Mock
-    private Mapper<WorkoutExerciseEntity, WorkoutExerciseVO> workoutExerciseVOMapper;
-
-    @Mock
-    private Mapper<WorkoutExerciseVO, WorkoutExerciseEntity> workoutExerciseEntityMapper;
 
     @InjectMocks
     private WorkoutExerciseService service;
@@ -50,7 +53,6 @@ class WorkoutExerciseServiceTest {
 
     public final String UUID_REQUIRED = "An UUID need to be informed!";
     private final String WORKOUT_EXERCISE_NOT_FOUND_MESSAGE = "Can not be find that Workout exercise!";
-    private static final String WORKOUT_EXERCISE_LIST_NOT_FOUND_MESSAGE = "Can not be find any Workout exercise!";
 
     private final String ID = "d8e7df81-2cd4-41a2-a005-62e6d8079716";
     private final String INVALID_ID = "d8e";
@@ -207,13 +209,13 @@ class WorkoutExerciseServiceTest {
     void testWorkoutExercises_WhenFindWorkoutExerciseById_ShouldReturnWorkoutExerciseObject() {
 
         try (MockedStatic<ValidatorUtils> validatorUtilsMockedStatic = Mockito.mockStatic(ValidatorUtils.class);
-             MockedStatic<UuidUtils> uuidUtilsMockedStatic = Mockito.mockStatic(UuidUtils.class);) {
+             MockedStatic<UuidUtils> uuidUtilsMockedStatic = Mockito.mockStatic(UuidUtils.class)) {
 
             uuidUtilsMockedStatic.when(() -> UuidUtils.isValidUuid(ID)).thenReturn(true);
             validatorUtilsMockedStatic.when(
                     () -> ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(
                             any(), anyString(), any(Class.class))).thenAnswer(invocation -> null);
-            ;
+
             when(repository.findById(ID)).thenReturn(Optional.of(workoutExerciseEntity));
             WorkoutExerciseVO findWorkoutExerciseVOByID = service.findById(ID);
 
@@ -253,9 +255,8 @@ class WorkoutExerciseServiceTest {
     @Test
     void testFindWorkoutExerciseById_WhenWorkoutExerciseNotExistsInTheDatabase_ThrowWorkoutExerciseNotFound() {
 
-        when(repository.findById(workoutExerciseVO.getId())).thenReturn(Optional.empty());
         WorkoutExerciseNotFound exception = assertThrows(WorkoutExerciseNotFound.class, () ->
-                service.findById(workoutExerciseVO.getId()));
+                service.findById(ID));
 
         assertNotNull(exception);
         assertEquals(WorkoutExerciseNotFound.ERROR.formatErrorMessage(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE), exception.getMessage());
@@ -267,16 +268,17 @@ class WorkoutExerciseServiceTest {
     @Test
     void testWorkoutExercise_When_FindAll_ShouldReturnWorkoutExerciseList() {
 
-        WorkoutExerciseEntity workoutExerciseEntity2 = workoutExerciseEntity;
-        List<WorkoutExerciseEntity> workoutExerciseEntities = new ArrayList<WorkoutExerciseEntity>(Arrays.asList(workoutExerciseEntity, workoutExerciseEntity2));
+        List<WorkoutExerciseEntity> workoutExerciseEntities = List.of(workoutExerciseEntity);
 
         when(repository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(workoutExerciseEntities));
         PageRequest pageRequest = PageRequest.of(0, 10);
         Page<WorkoutExerciseVO> workoutExerciseVOPage = service.findAll(pageRequest);
 
+        verify(repository,times(1)).findAll(any(Pageable.class));
+
         assertNotNull(workoutExerciseVOPage);
 
-        WorkoutExerciseVO workoutExerciseVO1 = workoutExerciseVOPage.getContent().get(0);
+        WorkoutExerciseVO workoutExerciseVO1 = workoutExerciseVOPage.getContent().getFirst();
         assertEquals(ID, workoutExerciseVO1.getId());
         assertEquals(NAME, workoutExerciseVO1.getName());
         assertEquals(DESCRIPTION, workoutExerciseVO1.getDescription());
@@ -285,7 +287,6 @@ class WorkoutExerciseServiceTest {
         assertEquals(DIFFICULTY_LEVEL, workoutExerciseVO1.getDifficultyLevel());
         assertEquals(MUSCLE_GROUPS, workoutExerciseVO1.getMuscleGroups());
 
-        verify(repository,times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -300,9 +301,8 @@ class WorkoutExerciseServiceTest {
     @Test
     void testDeleteWorkoutExercise_WhenUuidIsNull_ShouldThrowUuidUtilsException() {
 
-        workoutExerciseVO.setId(null);
         UuidUtilsException exception = assertThrows(UuidUtilsException.class, () ->
-                service.delete(workoutExerciseVO.getId()));
+                service.delete(null));
 
         assertNotNull(exception);
         assertEquals(UuidUtilsException.ERROR.formatErrorMessage(UUID_REQUIRED), exception.getMessage());
@@ -313,9 +313,8 @@ class WorkoutExerciseServiceTest {
     @Test
     void testDeleteWorkoutExercise_WhenUuidIsInvalid_ShouldThrowUuidUtilsException() {
 
-        workoutExerciseVO.setId(INVALID_ID);
         UuidUtilsException exception = assertThrows(UuidUtilsException.class, () ->
-                service.delete(workoutExerciseVO.getId()));
+                service.delete(INVALID_ID));
 
         assertNotNull(exception);
         assertEquals(UuidUtilsException.ERROR.formatErrorMessage(INVALID_ID), exception.getMessage());
@@ -326,9 +325,8 @@ class WorkoutExerciseServiceTest {
     @Test
     void testDeleteWorkoutExercise_WhenWorkoutExerciseNotExistsInTheDatabase_ThrowWorkoutExerciseNotFound() {
 
-        when(repository.findById(workoutExerciseVO.getId())).thenReturn(Optional.empty());
         WorkoutExerciseNotFound exception = assertThrows(WorkoutExerciseNotFound.class, () ->
-                service.delete(workoutExerciseVO.getId()));
+                service.delete(ID));
 
         assertNotNull(exception);
         assertEquals(WorkoutExerciseNotFound.ERROR.formatErrorMessage(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE), exception.getMessage());

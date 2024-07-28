@@ -95,25 +95,6 @@ public class WorkoutExerciseService implements WorkoutExerciseServiceContract<Wo
 
     }
 
-    @Override
-    public List<WorkoutExerciseVO> findByMuscleGroup(WorkoutExerciseVO workoutExerciseVO) {
-
-        WorkoutExerciseEntity workoutExerciseEntity = workoutExerciseEntityMapper.parseObject(workoutExerciseVO);
-        List<WorkoutExerciseEntity> byMuscleGroups = repository.findByMuscleGroups(workoutExerciseEntity.getMuscleGroups());
-        List<WorkoutExerciseVO> workoutExerciseVOList = workoutExerciseVOMapper.parseObjectList(byMuscleGroups);
-
-        return workoutExerciseVOList;
-    }
-
-    @Override
-    public List<WorkoutExerciseVO> findByDifficultLevel(WorkoutExerciseVO workoutExerciseVO) {
-
-        WorkoutExerciseEntity workoutExerciseEntity = workoutExerciseEntityMapper.parseObject(workoutExerciseVO);
-        List<WorkoutExerciseEntity> byDifficultLevel = repository.findByDifficultLevel(workoutExerciseEntity.getDifficultyLevel());
-        List<WorkoutExerciseVO> workoutExerciseVOList = workoutExerciseVOMapper.parseObjectList(byDifficultLevel);
-        return workoutExerciseVOList;
-    }
-
 
     @Override
     public void delete(String id) {
