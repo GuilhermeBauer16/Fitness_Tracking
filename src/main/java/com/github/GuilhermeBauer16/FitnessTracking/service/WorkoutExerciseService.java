@@ -29,8 +29,6 @@ public class WorkoutExerciseService implements WorkoutExerciseServiceContract<Wo
             new Mapper<>(WorkoutExerciseVO.class, WorkoutExerciseEntity.class);
 
     private static final String WORKOUT_EXERCISE_NOT_FOUND_MESSAGE = "Can not be find that Workout exercise!";
-    private static final String WORKOUT_EXERCISE_LIST_NOT_FOUND_MESSAGE = "Can not be find any Workout exercise!";
-
 
     private final WorkoutExerciseRepository repository;
 

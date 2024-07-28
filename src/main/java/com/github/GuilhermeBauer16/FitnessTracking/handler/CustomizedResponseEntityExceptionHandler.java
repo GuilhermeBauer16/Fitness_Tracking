@@ -43,19 +43,5 @@ public class CustomizedResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
-//
-//    @ExceptionHandler(InvalidJwtAuthenticationException.class)
-//    public final ResponseEntity<ExceptionResponse> handleInvalidJwtAuthenticationExceptions(
-//            Exception ex,
-//            WebRequest request
-//    ) {
-//        ExceptionResponse exceptionResponse = new ExceptionResponse(
-//                ex.getMessage(),
-//                request.getDescription(false),
-//                new Date()
-//        );
-//
-//        return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
-//
-//    }
+
 }

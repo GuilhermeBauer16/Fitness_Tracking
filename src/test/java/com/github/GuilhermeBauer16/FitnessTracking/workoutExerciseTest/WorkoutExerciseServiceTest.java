@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class WorkoutExerciseServiceTest {
+class WorkoutExerciseServiceTest {
 
     @Mock
     private WorkoutExerciseRepository repository;
@@ -68,6 +68,7 @@ public class WorkoutExerciseServiceTest {
         workoutExerciseVO = new WorkoutExerciseVO(ID, NAME, DESCRIPTION, CALORIES_BURNED, EXERCISE_TYPE, EQUIPMENT_NEEDED, DIFFICULTY_LEVEL, MUSCLE_GROUPS);
         workoutExerciseEntity = new WorkoutExerciseEntity(ID, NAME, DESCRIPTION, CALORIES_BURNED, EXERCISE_TYPE, EQUIPMENT_NEEDED, DIFFICULTY_LEVEL, MUSCLE_GROUPS);
     }
+
 
     @Test
     void testCreateWorkoutExercises_WhenSaveWorkoutExercise_ShouldReturnWorkoutExerciseObject() {
@@ -195,7 +196,7 @@ public class WorkoutExerciseServiceTest {
     void testUpdateWorkoutExercise_When_WorkoutExerciseIsNull_ShouldThrowWorkoutExerciseNotFound() {
 
         WorkoutExerciseNotFound exception = assertThrows(WorkoutExerciseNotFound.class, () ->
-                service.create(null));
+                service.update(null));
 
         assertNotNull(exception);
         assertEquals(WorkoutExerciseNotFound.ERROR.formatErrorMessage(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE), exception.getMessage());

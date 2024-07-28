@@ -6,12 +6,12 @@ import com.github.GuilhermeBauer16.FitnessTracking.factory.PersonalizedWorkoutTr
 import com.github.GuilhermeBauer16.FitnessTracking.mapper.Mapper;
 import com.github.GuilhermeBauer16.FitnessTracking.model.PersonalizedWorkoutTrainingEntity;
 import com.github.GuilhermeBauer16.FitnessTracking.model.WorkoutExerciseEntity;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.PersonalizedWorkoutTrainingVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import com.github.GuilhermeBauer16.FitnessTracking.repository.PersonalizedWorkoutTrainingRepository;
 import com.github.GuilhermeBauer16.FitnessTracking.service.contract.PersonalizedWorkoutTrainingServiceContract;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.UuidUtils;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.ValidatorUtils;
-import com.github.GuilhermeBauer16.FitnessTracking.model.values.PersonalizedWorkoutTrainingVO;
-import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,8 +29,6 @@ public class PersonalizedWorkoutTrainingService implements PersonalizedWorkoutTr
     @Autowired
     private PersonalizedWorkoutTrainingRepository repository;
 
-    private final Mapper<WorkoutExerciseEntity, WorkoutExerciseVO> workoutExerciseVOMapper =
-            new Mapper<>(WorkoutExerciseEntity.class, WorkoutExerciseVO.class);
 
     private final Mapper<WorkoutExerciseVO, WorkoutExerciseEntity> workoutExerciseEntityMapper =
             new Mapper<>(WorkoutExerciseVO.class, WorkoutExerciseEntity.class);
@@ -45,6 +43,11 @@ public class PersonalizedWorkoutTrainingService implements PersonalizedWorkoutTr
     private static final String PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE =
             "Can not be find any Workout exercise into your Personalized workout training!";
 
+    public PersonalizedWorkoutTrainingService(WorkoutExerciseService workoutExerciseService, PersonalizedWorkoutTrainingRepository repository) {
+        this.workoutExerciseService = workoutExerciseService;
+        this.repository = repository;
+    }
+
     @Override
     public PersonalizedWorkoutTrainingVO create(PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO) {
 
@@ -56,19 +59,15 @@ public class PersonalizedWorkoutTrainingService implements PersonalizedWorkoutTr
         PersonalizedWorkoutTrainingEntity personalizedWorkoutTrainingEntity = personalizedWorkoutTrainingEntityMapper.
                 parseObject(personalizedWorkoutTrainingVO);
 
-        try {
 
-            personalizedWorkoutTrainingEntity = PersonalizedWorkoutTrainingFactory.create(workoutExerciseEntity, personalizedWorkoutTrainingVO.getRepetitions(),
-                    personalizedWorkoutTrainingEntity.getSeries(), personalizedWorkoutTrainingEntity.getWeight());
+        personalizedWorkoutTrainingEntity = PersonalizedWorkoutTrainingFactory.create(workoutExerciseEntity, personalizedWorkoutTrainingVO.getRepetitions(),
+                personalizedWorkoutTrainingEntity.getSeries(), personalizedWorkoutTrainingEntity.getWeight());
 
-            ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(personalizedWorkoutTrainingEntity, PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE,
-                    FieldNotFound.class);
-            repository.save(personalizedWorkoutTrainingEntity);
-            return personalizedWorkoutTrainingVOMapper.parseObject(personalizedWorkoutTrainingEntity);
+        ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(personalizedWorkoutTrainingEntity, PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE,
+                FieldNotFound.class);
+        repository.save(personalizedWorkoutTrainingEntity);
+        return personalizedWorkoutTrainingVOMapper.parseObject(personalizedWorkoutTrainingEntity);
 
-        } catch (RuntimeException ignore) {
-            throw new PersonalizedWorkoutTrainingNotFound(PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE);
-        }
 
     }
 
@@ -83,21 +82,18 @@ public class PersonalizedWorkoutTrainingService implements PersonalizedWorkoutTr
         PersonalizedWorkoutTrainingEntity personalizedWorkoutTrainingEntity = repository.findById(personalizedWorkoutTrainingVO.getId()).orElseThrow(() -> new
                 PersonalizedWorkoutTrainingNotFound(PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE));
 
-        try {
-            PersonalizedWorkoutTrainingEntity updatedpersonalizedWorkoutTrainingEntity = ValidatorUtils.
-                    updateFieldIfNotNull(personalizedWorkoutTrainingEntity, personalizedWorkoutTrainingVO,
-                            PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE, PersonalizedWorkoutTrainingNotFound.class);
 
-            ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(updatedpersonalizedWorkoutTrainingEntity,
-                    PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE, FieldNotFound.class);
+        PersonalizedWorkoutTrainingEntity updatedpersonalizedWorkoutTrainingEntity = ValidatorUtils.
+                updateFieldIfNotNull(personalizedWorkoutTrainingEntity, personalizedWorkoutTrainingVO,
+                        PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE, PersonalizedWorkoutTrainingNotFound.class);
 
-            repository.save(updatedpersonalizedWorkoutTrainingEntity);
-            return personalizedWorkoutTrainingVOMapper.parseObject(updatedpersonalizedWorkoutTrainingEntity);
+        ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(updatedpersonalizedWorkoutTrainingEntity,
+                PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE, FieldNotFound.class);
 
-        } catch (RuntimeException ignore) {
+        repository.save(updatedpersonalizedWorkoutTrainingEntity);
+        return personalizedWorkoutTrainingVOMapper.parseObject(updatedpersonalizedWorkoutTrainingEntity);
 
-            throw new PersonalizedWorkoutTrainingNotFound(PERSONALIZED_WORKOUT_TRAINING_NOT_FOUND_MESSAGE);
-        }
+
     }
 
     @Override
@@ -116,8 +112,8 @@ public class PersonalizedWorkoutTrainingService implements PersonalizedWorkoutTr
         List<PersonalizedWorkoutTrainingEntity> byMuscleGroup = repository.findByMuscleGroup(
                 personalizedWorkoutTrainingVO.getWorkoutExerciseEntity().getMuscleGroups());
 
-        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = personalizedWorkoutTrainingVOMapper.parseObjectList(byMuscleGroup);
-        return personalizedWorkoutTrainingVOS;
+
+        return personalizedWorkoutTrainingVOMapper.parseObjectList(byMuscleGroup);
     }
 
     @Override
@@ -126,8 +122,7 @@ public class PersonalizedWorkoutTrainingService implements PersonalizedWorkoutTr
         List<PersonalizedWorkoutTrainingEntity> byMuscleGroup = repository.findByDifficultyLevel(
                 personalizedWorkoutTrainingVO.getWorkoutExerciseEntity().getDifficultyLevel());
 
-        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = personalizedWorkoutTrainingVOMapper.parseObjectList(byMuscleGroup);
-        return personalizedWorkoutTrainingVOS;
+        return personalizedWorkoutTrainingVOMapper.parseObjectList(byMuscleGroup);
     }
 
     @Override
@@ -136,8 +131,7 @@ public class PersonalizedWorkoutTrainingService implements PersonalizedWorkoutTr
         List<PersonalizedWorkoutTrainingEntity> byMuscleGroup = repository.
                 findByName(personalizedWorkoutTrainingVO.getWorkoutExerciseEntity().getName());
 
-        List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOS = personalizedWorkoutTrainingVOMapper.parseObjectList(byMuscleGroup);
-        return personalizedWorkoutTrainingVOS;
+        return personalizedWorkoutTrainingVOMapper.parseObjectList(byMuscleGroup);
     }
 
 

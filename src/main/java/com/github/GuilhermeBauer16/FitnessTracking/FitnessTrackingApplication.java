@@ -11,7 +11,9 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 public class FitnessTrackingApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(FitnessTrackingApplication.class, args);
+
 	}
 
 }

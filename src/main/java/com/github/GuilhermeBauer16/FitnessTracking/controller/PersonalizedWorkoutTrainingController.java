@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/personalizedWorkout")
-public class PersonalizedWorkoutTrainingController implements PersonalizedWorkoutTrainingControllerContract<PersonalizedWorkoutTrainingVO, String> {
+public class PersonalizedWorkoutTrainingController implements PersonalizedWorkoutTrainingControllerContract {
 
     @Autowired
     private PersonalizedWorkoutTrainingService service;
@@ -67,7 +67,7 @@ public class PersonalizedWorkoutTrainingController implements PersonalizedWorkou
     }
 
     @Override
-    public ResponseEntity<?> delete(String id) {
+    public ResponseEntity<Void> delete(String id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

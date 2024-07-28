@@ -228,7 +228,6 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
     }
 
 
-
     @Order(5)
     @Test
     void integrationTestGivenWorkoutExercise_when_delete_ShouldReturnNoContent() {

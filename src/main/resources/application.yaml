@@ -21,3 +21,5 @@ spring:
   logging:
     level:
       org.springframework.security: DEBUG
+  main:
+    allow-bean-definition-overriding: true
