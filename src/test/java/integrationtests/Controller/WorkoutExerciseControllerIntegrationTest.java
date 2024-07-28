@@ -11,7 +11,7 @@ import com.github.GuilhermeBauer16.FitnessTracking.enums.DifficultyLevel;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.ExerciseType;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.MuscleGroup;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.PaginatedResponse;
-import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import integrationtests.testContainers.AbstractionIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -226,7 +226,6 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
         assertEquals(DifficultyLevel.INTERMEDIATE, workoutExerciseVO2.getDifficultyLevel()); // Assuming difficulty level remains unchanged
         assertEquals(new HashSet<>(Arrays.asList(MuscleGroup.LEGS, MuscleGroup.GLUTES)), workoutExerciseVO2.getMuscleGroups());
     }
-
 
 
     @Order(5)

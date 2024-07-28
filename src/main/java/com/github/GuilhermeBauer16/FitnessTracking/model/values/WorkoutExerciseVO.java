@@ -1,4 +1,4 @@
-package com.github.GuilhermeBauer16.FitnessTracking.vo;
+package com.github.GuilhermeBauer16.FitnessTracking.model.values;
 
 import com.github.GuilhermeBauer16.FitnessTracking.enums.DifficultyLevel;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.ExerciseType;

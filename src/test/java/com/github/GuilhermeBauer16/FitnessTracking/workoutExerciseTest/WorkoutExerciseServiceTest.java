@@ -11,7 +11,7 @@ import com.github.GuilhermeBauer16.FitnessTracking.repository.WorkoutExerciseRep
 import com.github.GuilhermeBauer16.FitnessTracking.service.WorkoutExerciseService;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.UuidUtils;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.ValidatorUtils;
-import com.github.GuilhermeBauer16.FitnessTracking.vo.WorkoutExerciseVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class WorkoutExerciseServiceTest {
+class WorkoutExerciseServiceTest {
 
     @Mock
     private WorkoutExerciseRepository repository;
@@ -69,13 +69,14 @@ public class WorkoutExerciseServiceTest {
         workoutExerciseEntity = new WorkoutExerciseEntity(ID, NAME, DESCRIPTION, CALORIES_BURNED, EXERCISE_TYPE, EQUIPMENT_NEEDED, DIFFICULTY_LEVEL, MUSCLE_GROUPS);
     }
 
+
     @Test
     void testCreateWorkoutExercises_WhenSaveWorkoutExercise_ShouldReturnWorkoutExerciseObject() {
 
         try (MockedStatic<UuidUtils> mockedUuidUtils = Mockito.mockStatic(UuidUtils.class);
              MockedStatic<ValidatorUtils> mockedValidatorUtils = Mockito.mockStatic(ValidatorUtils.class)) {
 
-            mockedValidatorUtils.when(() -> ValidatorUtils.checkObjectOrThrowException(any(), anyString(), any(Class.class))).thenAnswer(invocation -> null);
+            mockedValidatorUtils.when(() -> ValidatorUtils.checkObjectIsNullOrThrowException(any(), anyString(), any(Class.class))).thenAnswer(invocation -> null);
             mockedUuidUtils.when(UuidUtils::generateUuid).thenReturn(ID);
 
             mockedValidatorUtils.when(() -> ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(any(), anyString(), any(Class.class))).thenAnswer(invocation -> null);
@@ -93,7 +94,7 @@ public class WorkoutExerciseServiceTest {
             assertEquals(DIFFICULTY_LEVEL, createdWorkoutExerciseVO.getDifficultyLevel());
             assertEquals(MUSCLE_GROUPS, createdWorkoutExerciseVO.getMuscleGroups());
 
-            mockedValidatorUtils.verify(() -> ValidatorUtils.checkObjectOrThrowException(any(), anyString(), any(Class.class)));
+            mockedValidatorUtils.verify(() -> ValidatorUtils.checkObjectIsNullOrThrowException(any(), anyString(), any(Class.class)));
             mockedUuidUtils.verify(UuidUtils::generateUuid);
             mockedValidatorUtils.verify(() -> ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(any(), anyString(), any(Class.class)));
 
@@ -120,7 +121,7 @@ public class WorkoutExerciseServiceTest {
             workoutExerciseEntity.setName("squat");
             workoutExerciseEntity.setCaloriesBurned(70);
 
-            mockedValidatorUtils.when(() -> ValidatorUtils.checkObjectOrThrowException(any(), anyString(), any(Class.class)))
+            mockedValidatorUtils.when(() -> ValidatorUtils.checkObjectIsNullOrThrowException(any(), anyString(), any(Class.class)))
                     .thenAnswer(invocation -> null);
             mockedUuidUtils.when(() -> UuidUtils.isValidUuid(workoutExerciseEntity.getId()))
                     .thenReturn(true);
@@ -145,7 +146,7 @@ public class WorkoutExerciseServiceTest {
             assertEquals(DIFFICULTY_LEVEL, updatedWorkoutExerciseVO.getDifficultyLevel());
             assertEquals(MUSCLE_GROUPS, updatedWorkoutExerciseVO.getMuscleGroups());
 
-            mockedValidatorUtils.verify(() -> ValidatorUtils.checkObjectOrThrowException(any(), anyString(), any(Class.class)));
+            mockedValidatorUtils.verify(() -> ValidatorUtils.checkObjectIsNullOrThrowException(any(), anyString(), any(Class.class)));
             mockedUuidUtils.verify(() -> UuidUtils.isValidUuid(anyString()));
             mockedValidatorUtils.verify(() -> ValidatorUtils.updateFieldIfNotNull(any(), any(), anyString(), any()));
             mockedValidatorUtils.verify(() -> ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(any(), anyString(), any()));
@@ -195,7 +196,7 @@ public class WorkoutExerciseServiceTest {
     void testUpdateWorkoutExercise_When_WorkoutExerciseIsNull_ShouldThrowWorkoutExerciseNotFound() {
 
         WorkoutExerciseNotFound exception = assertThrows(WorkoutExerciseNotFound.class, () ->
-                service.create(null));
+                service.update(null));
 
         assertNotNull(exception);
         assertEquals(WorkoutExerciseNotFound.ERROR.formatErrorMessage(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE), exception.getMessage());
