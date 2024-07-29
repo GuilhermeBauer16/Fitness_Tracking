@@ -35,5 +35,5 @@ jobs:
 
     - name: Tag and Push Docker Image
       run: |
-        docker tag fitness_tracking:latest guilhermebauer/fitness_tracking:latest
-        docker push guilhermebauer/fitness_tracking:latest
+        ddocker tag fitness_tracking_status:latest guilhermebauer/fitness_tracking_status:latest
+        docker push guilhermebauer/fitness_tracking_status:latest
