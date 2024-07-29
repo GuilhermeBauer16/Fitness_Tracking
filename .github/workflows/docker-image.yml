@@ -38,6 +38,7 @@ jobs:
     - name: Push to Docker Hub Container Registry
       run: |
           docker tag fitness_tracking:latest ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking
+  
 
 
