@@ -26,8 +26,8 @@ services:
 
   fitness_tracking:
 
-    image: guilhermebauer/fitness_tracking
-    container_name: fitness_tracking_app
+    image: guilhermebauer/fitness_tracking_status
+    container_name: fitness_tracking_status
 #    build: .
 #
     restart: always
