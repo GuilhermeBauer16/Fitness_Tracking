@@ -23,22 +23,17 @@ jobs:
         java-version: '21'
         distribution: 'adopt'
         cache: maven
-        
+
     - name: Build Application Jar
-      working-directory: .
       run: mvn clean package
-      
-    - name: Docker Compose Build 
-      working-directory: .
+
+    - name: Docker Compose Build
       run: docker compose build
-      
+
     - name: List Docker Images
       run: docker images
 
     - name: Push to Docker Hub Container Registry
       run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
-  
-
-
+        docker tag fitness_tracking:latest ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/fitness_tracking:latest
