@@ -5,7 +5,7 @@ import com.github.GuilhermeBauer16.FitnessTracking.model.WorkoutExerciseEntity;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.UuidUtils;
 
 /**
- * That factory create an instance of the class {@Link PersonalizedWorkoutTrainingEntity}
+ * That factory create an instance of the class {@link  PersonalizedWorkoutTrainingEntity}
  * <p>
  * That factory hide the business rules to create a Personalized Workout Training,
  * include the creation of a unique UUID for each Personalized Workout Training
