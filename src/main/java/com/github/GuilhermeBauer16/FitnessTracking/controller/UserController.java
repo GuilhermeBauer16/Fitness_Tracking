@@ -1,7 +1,9 @@
 package com.github.GuilhermeBauer16.FitnessTracking.controller;
 
 import com.github.GuilhermeBauer16.FitnessTracking.controller.contract.UserControllerContract;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.TokenVO;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.UserVO;
+import com.github.GuilhermeBauer16.FitnessTracking.service.UserAuthService;
 import com.github.GuilhermeBauer16.FitnessTracking.service.UserRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,9 @@ public class UserController implements UserControllerContract {
     @Autowired
     private UserRegisterService userRegisterService;
 
+    @Autowired
+    private UserAuthService userAuthService;
+
     @Override
     public ResponseEntity<UserVO> create(UserVO userVO) {
         UserVO createdUser = userRegisterService.create(userVO);
@@ -23,8 +28,9 @@ public class UserController implements UserControllerContract {
     }
 
     @Override
-    public ResponseEntity<UserVO> login(UserVO userVO) {
-        return null;
+    public ResponseEntity<TokenVO> login(UserVO userVO) {
+        TokenVO login = userAuthService.login(userVO);
+        return ResponseEntity.ok(login);
     }
 
     @Override

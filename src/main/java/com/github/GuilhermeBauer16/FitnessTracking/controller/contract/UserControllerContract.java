@@ -1,5 +1,6 @@
 package com.github.GuilhermeBauer16.FitnessTracking.controller.contract;
 
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.TokenVO;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.UserVO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +14,7 @@ public interface UserControllerContract {
     @PostMapping("/signIn")
     ResponseEntity<UserVO> create(@RequestBody UserVO userVO);
     @PostMapping("/login")
-    ResponseEntity<UserVO> login(@RequestBody UserVO userVO);
+    ResponseEntity<TokenVO> login(@RequestBody UserVO userVO);
     @GetMapping(value = "/{email}")
     ResponseEntity<UserVO> findUserByEmail(@PathVariable("email")String email);
     @DeleteMapping(value = "/{email}")

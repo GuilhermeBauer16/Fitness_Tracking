@@ -43,7 +43,10 @@ public class SecurityConfig {
                         authorizeHttpRequests -> authorizeHttpRequests
 
                                 .requestMatchers("/user/signIn/**").permitAll()
+                                .requestMatchers("/user/**").permitAll()
+                                .requestMatchers("/api/**").authenticated()
                                 .requestMatchers("/users").denyAll()
+
                 )
                 .cors(cors -> {})
                 .build();
