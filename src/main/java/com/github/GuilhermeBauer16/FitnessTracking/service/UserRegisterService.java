@@ -1,5 +1,7 @@
 package com.github.GuilhermeBauer16.FitnessTracking.service;
 
+import com.github.GuilhermeBauer16.FitnessTracking.exception.FieldNotFound;
+import com.github.GuilhermeBauer16.FitnessTracking.exception.UserNotFoundException;
 import com.github.GuilhermeBauer16.FitnessTracking.factory.UserFactory;
 import com.github.GuilhermeBauer16.FitnessTracking.mapper.Mapper;
 import com.github.GuilhermeBauer16.FitnessTracking.model.UserEntity;
@@ -17,7 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRegisterService implements UserDetailsService, UserRegistrationContract {
 
-    private final Mapper<UserVO, UserEntity> parseUserVOToUserEntity = new Mapper<>(UserVO.class, UserEntity.class);
+    private static final String USER_NOT_FOUND = "the user can't be found";
+    private static final String EMAIL_NOT_FOUND = "a user with that email: %s can't be found!";
 
     private final Mapper<UserEntity, UserVO> parseUserEntityToUserVO = new Mapper<>(UserEntity.class, UserVO.class);
 
@@ -37,11 +40,11 @@ public class UserRegisterService implements UserDetailsService, UserRegistration
     @Override
     public UserVO create(UserVO userVO) {
 
-        ValidatorUtils.checkObjectIsNullOrThrowException(userVO,"not found", RuntimeException.class);
+        ValidatorUtils.checkObjectIsNullOrThrowException(userVO,USER_NOT_FOUND, UserNotFoundException.class);
         userVO.setPassword(passwordEncoder.encode(userVO.getPassword()));
 
         UserEntity userEntity = UserFactory.create(userVO.getName(), userVO.getEmail(), userVO.getPassword(), userVO.getUserProfile());
-        ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(userEntity,"not found", RuntimeException.class);
+        ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(userEntity,USER_NOT_FOUND, FieldNotFound.class);
         UserEntity savedUser = repository.save(userEntity);
         return parseUserEntityToUserVO.parseObject(savedUser);
 
@@ -49,14 +52,15 @@ public class UserRegisterService implements UserDetailsService, UserRegistration
 
     @Override
     public UserVO findUserByEmail(String email) {
-
-        UserEntity userEntity = repository.findUserByEmail(email).orElseThrow(() -> new RuntimeException("not found"));
-
+        UserEntity userEntity = repository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(EMAIL_NOT_FOUND));
+        ValidatorUtils.checkFieldNotNullAndNotEmptyOrThrowException(userEntity, USER_NOT_FOUND, FieldNotFound.class);
         return parseUserEntityToUserVO.parseObject(userEntity);
     }
 
     @Override
     public void delete(String email) {
+        UserEntity userEntity = repository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(EMAIL_NOT_FOUND));
+        repository.delete(userEntity);
 
     }
 
@@ -64,10 +68,10 @@ public class UserRegisterService implements UserDetailsService, UserRegistration
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         try {
-            return repository.findUserByEmail(email).orElseThrow(() -> new RuntimeException("not found"));
+            return repository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(EMAIL_NOT_FOUND));
         } catch (RuntimeException ignore) {
 
-            throw new UsernameNotFoundException("not found");
+            throw new UsernameNotFoundException(USER_NOT_FOUND);
         }
 
     }

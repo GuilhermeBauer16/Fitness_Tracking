@@ -1,23 +1,27 @@
 package com.github.GuilhermeBauer16.FitnessTracking.enums;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum UserProfile {
+    @JsonProperty("user")
     USER("USER"),
+    @JsonProperty("admin")
     ADMIN("ADMIN");
 
-    private final String userProfile;
+    private final String profile;
 
     UserProfile(String userProfile) {
-        this.userProfile = userProfile;
+        this.profile = userProfile;
     }
 
-    public String getUserProfile() {
-        return userProfile;
+    public String getProfile() {
+        return profile;
     }
 
     public static UserProfile fromString(String userProfile) {
         for (UserProfile profile : UserProfile.values()) {
-            if (profile.userProfile.equalsIgnoreCase(userProfile)) {
+            if (profile.profile.equalsIgnoreCase(userProfile)) {
                 return profile;
             }
         }

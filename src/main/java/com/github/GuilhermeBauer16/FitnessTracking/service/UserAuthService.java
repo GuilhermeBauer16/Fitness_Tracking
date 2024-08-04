@@ -1,6 +1,7 @@
 package com.github.GuilhermeBauer16.FitnessTracking.service;
 
-import com.github.GuilhermeBauer16.FitnessTracking.jwt.JwtTokenProvider;
+import com.github.GuilhermeBauer16.FitnessTracking.exception.UserNotFoundException;
+import com.github.GuilhermeBauer16.FitnessTracking.filters.JwtTokenProvider;
 import com.github.GuilhermeBauer16.FitnessTracking.model.UserEntity;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.TokenVO;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.UserVO;
@@ -9,22 +10,28 @@ import com.github.GuilhermeBauer16.FitnessTracking.service.contract.UserAuthCont
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserAuthService implements UserAuthContract {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+
+    private static final String EMAIL_NOT_FOUND = "a user with that email: %s can't be found!";
+    private static final String USER_NOT_FOUND = "the user can't be found";
+
+    private final AuthenticationManager authenticationManager;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+
+    private final UserRepository repository;
+
 
     @Autowired
-    private UserRepository repository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserAuthService(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository repository) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.repository = repository;
+    }
 
     @Override
     @SuppressWarnings("rawtypes")
@@ -32,54 +39,20 @@ public class UserAuthService implements UserAuthContract {
 
         try {
 
-            Authentication authenticate = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userVO.getEmail(), userVO.getPassword())
             );
 
-
-            UserEntity userEntity = repository.findUserByEmail(userVO.getEmail()).orElseThrow(() -> new RuntimeException("not found that user"));
+            UserEntity userEntity = repository.findUserByEmail(userVO.getEmail()).orElseThrow(() -> new UserNotFoundException(EMAIL_NOT_FOUND));
             return jwtTokenProvider.createAccessToken(userEntity.getEmail(),userEntity.getUserProfile());
 
         }catch (RuntimeException ignore){
 
-            throw new RuntimeException("not found!");
+            throw new UserNotFoundException(USER_NOT_FOUND);
         }
 
     }
 
-//    @SuppressWarnings("rawtypes")
-//    public ResponseEntity signin(AccountCredentialsVO data) {
-//        try {
-//
-//            authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(username, password)
-//            );
-//            var user = userRepository.findByUsername(username);
-//            var tokenResponse = new TokenVO();
-//            if (user != null) {
-//                tokenResponse = jwtTokenProvider.createAccessToken(username, user.getRoles());
-//            } else {
-//                throw new UsernameNotFoundException("Username: " + username + " not found!");
-//            }
-//            System.out.println(user.getPassword());
-//            return ResponseEntity.ok(tokenResponse);
-//
-//        } catch (Exception e) {
-//            throw new BadCredentialsException("Invalid username/password supplied");
-//        }
-//    }
-//
-//    @SuppressWarnings("rawtypes")
-//    public ResponseEntity refreshToken(String username, String refreshToken) {
-//
-//
-//        var user = userRepository.findByUsername(username);
-//        var tokenResponse = new TokenVO();
-//        if (user != null) {
-//            tokenResponse = jwtTokenProvider.createRefreshToken(refreshToken);
-//        } else {
-//            throw new UsernameNotFoundException("Username: " + username + " not found!");
-//        }
-//        return ResponseEntity.ok(tokenResponse);
-//    }
+
+
 }

@@ -7,8 +7,8 @@ import com.github.GuilhermeBauer16.FitnessTracking.utils.UuidUtils;
 /**
  * That factory create an instance of the class {@link UserEntity}
  * <p>
- * That factory hide the business rules to create a Personalized Workout Training,
- * include the creation of a unique UUID for each Personalized Workout Training
+ * That factory hide the business rules to create a User Entity,
+ * include the creation of a unique UUID for each User Entity
  * </p>
  */
 

@@ -1,4 +1,4 @@
-package com.github.GuilhermeBauer16.FitnessTracking.jwt;
+package com.github.GuilhermeBauer16.FitnessTracking.filters;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

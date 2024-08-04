@@ -1,7 +1,7 @@
 package com.github.GuilhermeBauer16.FitnessTracking.config;
 
-import com.github.GuilhermeBauer16.FitnessTracking.jwt.JwtTokenFilter;
-import com.github.GuilhermeBauer16.FitnessTracking.jwt.JwtTokenProvider;
+import com.github.GuilhermeBauer16.FitnessTracking.filters.JwtTokenFilter;
+import com.github.GuilhermeBauer16.FitnessTracking.filters.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +19,7 @@ public class SecurityConfig {
 
     @Autowired
     private JwtTokenProvider tokenProvider;
+
 
     @Bean
     AuthenticationManager authenticationManagerBean(
@@ -41,15 +42,15 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
-
-                                .requestMatchers("/user/signIn/**").permitAll()
-                                .requestMatchers("/user/**").permitAll()
+                                .requestMatchers(
+                                        "/api/user/**",
+                                        "/auth/refresh/**",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
                                 .requestMatchers("/api/**").authenticated()
                                 .requestMatchers("/users").denyAll()
-
                 )
                 .cors(cors -> {})
                 .build();
-
-    }
-}
+}}

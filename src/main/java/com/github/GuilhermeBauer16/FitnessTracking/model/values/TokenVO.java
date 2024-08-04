@@ -1,7 +1,6 @@
 package com.github.GuilhermeBauer16.FitnessTracking.model.values;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class TokenVO{
 
@@ -72,19 +71,6 @@ public class TokenVO{
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TokenVO tokenVO = (TokenVO) o;
-        return Objects.equals(username, tokenVO.username) && Objects.equals(authenticated, tokenVO.authenticated) && Objects.equals(created, tokenVO.created) && Objects.equals(expiration, tokenVO.expiration) && Objects.equals(accessToken, tokenVO.accessToken) && Objects.equals(refreshToken, tokenVO.refreshToken);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(username, authenticated, created, expiration, accessToken, refreshToken);
     }
 
 
