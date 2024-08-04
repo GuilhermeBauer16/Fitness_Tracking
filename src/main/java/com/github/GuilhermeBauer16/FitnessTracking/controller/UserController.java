@@ -3,6 +3,8 @@ package com.github.GuilhermeBauer16.FitnessTracking.controller;
 import com.github.GuilhermeBauer16.FitnessTracking.controller.contract.UserControllerContract;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.TokenVO;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.UserVO;
+import com.github.GuilhermeBauer16.FitnessTracking.request.LoginRequest;
+import com.github.GuilhermeBauer16.FitnessTracking.response.UserResponse;
 import com.github.GuilhermeBauer16.FitnessTracking.service.UserAuthService;
 import com.github.GuilhermeBauer16.FitnessTracking.service.UserRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +24,26 @@ public class UserController implements UserControllerContract {
     private UserAuthService userAuthService;
 
     @Override
-    public ResponseEntity<UserVO> create(UserVO userVO) {
-        UserVO createdUser = userRegisterService.create(userVO);
+    public ResponseEntity<UserResponse> create(UserVO userVO) {
+        UserResponse createdUser = userRegisterService.create(userVO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<TokenVO> login(UserVO userVO) {
-        TokenVO login = userAuthService.login(userVO);
+    public ResponseEntity<TokenVO> login(LoginRequest loginRequest) {
+        TokenVO login = userAuthService.login(loginRequest);
         return ResponseEntity.ok(login);
     }
 
     @Override
-    public ResponseEntity<UserVO> findUserByEmail(String email) {
-        UserVO userByEmail = userRegisterService.findUserByEmail(email);
+    public ResponseEntity<UserResponse> findUserByEmail(String email) {
+        UserResponse userByEmail = userRegisterService.findUserByEmail(email);
         return ResponseEntity.ok(userByEmail );
     }
 
     @Override
     public ResponseEntity<Void> delete(String email) {
-        return null;
+        userRegisterService.delete(email);
+        return ResponseEntity.noContent().build();
     }
 }

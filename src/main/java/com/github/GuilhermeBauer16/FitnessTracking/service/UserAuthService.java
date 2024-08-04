@@ -6,6 +6,7 @@ import com.github.GuilhermeBauer16.FitnessTracking.model.UserEntity;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.TokenVO;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.UserVO;
 import com.github.GuilhermeBauer16.FitnessTracking.repository.UserRepository;
+import com.github.GuilhermeBauer16.FitnessTracking.request.LoginRequest;
 import com.github.GuilhermeBauer16.FitnessTracking.service.contract.UserAuthContract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserAuthService implements UserAuthContract {
 
-    private static final String EMAIL_NOT_FOUND = "a user with that email: %s can't be found!";
+    private static final String EMAIL_NOT_FOUND = "a user with that email can't be found!";
     private static final String USER_NOT_FOUND = "the user can't be found";
 
     private final AuthenticationManager authenticationManager;
@@ -34,16 +35,16 @@ public class UserAuthService implements UserAuthContract {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public TokenVO login(UserVO userVO) {
+
+    public TokenVO login(LoginRequest loginRequest) {
 
         try {
 
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userVO.getEmail(), userVO.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
 
-            UserEntity userEntity = repository.findUserByEmail(userVO.getEmail()).orElseThrow(() -> new UserNotFoundException(EMAIL_NOT_FOUND));
+            UserEntity userEntity = repository.findUserByEmail(loginRequest.getEmail()).orElseThrow(() -> new UserNotFoundException(EMAIL_NOT_FOUND));
             return jwtTokenProvider.createAccessToken(userEntity.getEmail(),userEntity.getUserProfile());
 
         }catch (RuntimeException ignore){

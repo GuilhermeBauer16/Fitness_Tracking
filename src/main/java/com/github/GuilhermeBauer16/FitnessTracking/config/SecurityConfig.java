@@ -43,11 +43,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers(
-                                        "/api/user/**",
-                                        "/auth/refresh/**",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**"
+                                        "/api/user/signIn",
+                                        "/api/user/login"
                                 ).permitAll()
+                                .requestMatchers("/api/workoutExercise/**").hasAuthority("ADMIN")
+                                .requestMatchers("/api/personalizedWorkout/**").hasAnyAuthority("USER", "ADMIN")
                                 .requestMatchers("/api/**").authenticated()
                                 .requestMatchers("/users").denyAll()
                 )

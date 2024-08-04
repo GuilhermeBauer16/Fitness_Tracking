@@ -32,7 +32,8 @@ public class CustomizedResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({UuidUtilsException.class,
-    InvalidTokenException.class})
+    InvalidTokenException.class,
+    EmailAlreadyRegisterException.class})
     public final ResponseEntity<ExceptionResponse> handlerInternalServerErrorException(
             Exception ex,
             WebRequest webRequest
