@@ -9,7 +9,11 @@ import com.github.GuilhermeBauer16.FitnessTracking.config.TestConfigs;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.DifficultyLevel;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.ExerciseType;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.MuscleGroup;
+import com.github.GuilhermeBauer16.FitnessTracking.enums.UserProfile;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.TokenVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.UserVO;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.WorkoutExerciseVO;
+import com.github.GuilhermeBauer16.FitnessTracking.request.LoginRequest;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.PaginatedResponse;
 import integrationtests.testContainers.AbstractionIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
@@ -41,11 +45,16 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTest {
 
+
     private static RequestSpecification specification;
     private static ObjectMapper objectMapper;
     private static WorkoutExerciseVO workoutExerciseVO;
 
 
+    private static final String USER_NAME = "john";
+    private static final String EMAIL = "jonh@gmail.com";
+    private static final String PASSWORD = "123456";
+    private static final UserProfile USER_PROFILE = UserProfile.ADMIN;
 
     private static final String ID = "d8e7df81-2cd4-41a2-a005-62e6d8079716";
     private static final String NAME = "push-up";
@@ -58,15 +67,9 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
 
     @BeforeAll
     public static void setup() {
+
         objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-        specification = new RequestSpecBuilder()
-                .setBaseUri("http://localhost:8889")
-                .setBasePath("/workoutExercise")
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
 
         workoutExerciseVO = new WorkoutExerciseVO(ID, NAME, DESCRIPTION, CALORIES_BURNED,
                 EXERCISE_TYPE, EQUIPMENT_NEEDED, DIFFICULTY_LEVEL, MUSCLE_GROUPS);
@@ -74,8 +77,59 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
 
     @Test
     @Order(1)
+    void signUp() {
+
+        UserVO userVO = new UserVO(ID, USER_NAME, EMAIL, PASSWORD, USER_PROFILE);
+        given()
+                .basePath("/api/user/signIn")
+                .port(8889)
+                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .body(userVO)
+                .when()
+                .post()
+                .then()
+                .statusCode(201)
+                .extract()
+                .body()
+                .asString();
+
+    }
+
+    @Test
+    @Order(2)
+    void authorization() {
+
+        LoginRequest loginRequest = new LoginRequest(EMAIL, PASSWORD);
+        var accessToken = given()
+                .basePath("/api/user/login")
+                .port(TestConfigs.SERVER_PORT)
+                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .body(loginRequest)
+                .when()
+                .post()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(TokenVO.class)
+                .getAccessToken();
+
+
+        specification = new RequestSpecBuilder()
+                .addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
+                .setBaseUri("http://localhost:" + TestConfigs.SERVER_PORT)
+                .setBasePath("/api/workoutExercise")
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
+    }
+
+
+    @Test
+    @Order(3)
     void givenWorkoutExerciseObject_when_CreateWorkoutExercise_ShouldReturnAWorkoutExerciseObject() throws IOException {
-        var content = given().spec(specification)
+        var content = given()
+                .spec(specification)
                 .contentType(TestConfigs.CONTENT_TYPE_JSON)
                 .body(workoutExerciseVO)
                 .when()
@@ -101,13 +155,13 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
     }
 
 
-
     @Test
-    @Order(2)
+    @Order(4)
     void givenWorkoutExerciseObject_when_FindById_ShouldReturnAWorkoutExerciseObject() throws IOException {
 
 
-        var content = given().spec(specification)
+        var content = given()
+                .spec(specification)
                 .contentType(TestConfigs.CONTENT_TYPE_JSON)
                 .pathParam("id", workoutExerciseVO.getId())
                 .when()
@@ -134,10 +188,11 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     void givenWorkoutExerciseObject_when_findAllWorkoutExercise_ShouldReturnWorkoutExerciseList() throws JsonProcessingException {
 
-        var content = given().spec(specification)
+        var content = given()
+                .spec(specification)
                 .when()
                 .get()
                 .then()
@@ -147,7 +202,8 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
                 .asString();
 
 
-        PaginatedResponse<WorkoutExerciseVO> paginatedResponse = objectMapper.readValue(content, new TypeReference<>() {});
+        PaginatedResponse<WorkoutExerciseVO> paginatedResponse = objectMapper.readValue(content, new TypeReference<>() {
+        });
         List<WorkoutExerciseVO> workoutExerciseVOList = paginatedResponse.getContent();
 
         workoutExerciseVO = workoutExerciseVOList.getFirst();
@@ -165,13 +221,14 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     void givenWorkoutExerciseObject_when_UpdateWorkoutExercise_ShouldReturnAWorkoutExerciseObject() throws IOException {
 
         workoutExerciseVO.setName("squat");
         workoutExerciseVO.setCaloriesBurned(70);
 
-        var content = given().spec(specification)
+        var content = given()
+                .spec(specification)
                 .contentType(TestConfigs.CONTENT_TYPE_JSON)
                 .body(workoutExerciseVO)
                 .when()
@@ -197,11 +254,12 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
     }
 
 
-    @Order(5)
+    @Order(7)
     @Test
     void givenWorkoutExercise_when_delete_ShouldReturnNoContent() {
 
-        given().spec(specification)
+        given()
+                .spec(specification)
                 .pathParam("id", workoutExerciseVO.getId())
                 .when()
                 .delete("{id}")

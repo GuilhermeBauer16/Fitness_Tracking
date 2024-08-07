@@ -9,9 +9,14 @@ import com.github.GuilhermeBauer16.FitnessTracking.config.TestConfigs;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.DifficultyLevel;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.ExerciseType;
 import com.github.GuilhermeBauer16.FitnessTracking.enums.MuscleGroup;
+import com.github.GuilhermeBauer16.FitnessTracking.enums.UserProfile;
 import com.github.GuilhermeBauer16.FitnessTracking.model.WorkoutExerciseEntity;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.PersonalizedWorkoutTrainingVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.TokenVO;
+import com.github.GuilhermeBauer16.FitnessTracking.model.values.UserVO;
+import com.github.GuilhermeBauer16.FitnessTracking.repository.UserRepository;
 import com.github.GuilhermeBauer16.FitnessTracking.repository.WorkoutExerciseRepository;
+import com.github.GuilhermeBauer16.FitnessTracking.request.LoginRequest;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.PaginatedResponse;
 import integrationtests.testContainers.AbstractionIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
@@ -44,6 +49,9 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegrationTest {
 
+    @Autowired
+    UserRepository userRepository;
+
     private static RequestSpecification specification;
     private static ObjectMapper objectMapper;
     private static PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVO;
@@ -53,6 +61,11 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
     private static final Integer REPETITIONS = 10;
     private static final Integer SERIES = 4;
     private static final Double WEIGHT = 40d;
+
+    private static final String USER_NAME = "john";
+    private static final String EMAIL = "jonhBee@gmail.com";
+    private static final String PASSWORD = "123456";
+    private static final UserProfile USER_PROFILE = UserProfile.ADMIN;
 
     private static final String NAME = "push-up";
     private static final String DESCRIPTION = "A push-up is a common calisthenics exercise beginning from the prone position.";
@@ -67,12 +80,6 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
         objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        specification = new RequestSpecBuilder()
-                .setBaseUri("http://localhost:8889")
-                .setBasePath("/personalizedWorkout")
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
 
         WorkoutExerciseEntity workoutExerciseEntity = new WorkoutExerciseEntity(ID, NAME, DESCRIPTION, CALORIES_BURNED,
                 EXERCISE_TYPE, EQUIPMENT_NEEDED, DIFFICULTY_LEVEL, MUSCLE_GROUPS);
@@ -84,6 +91,57 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
 
     @Test
     @Order(1)
+    void signUp() {
+
+        UserVO userVO = new UserVO(ID, USER_NAME, EMAIL, PASSWORD, USER_PROFILE);
+        given()
+                .basePath("/api/user/signIn")
+                .port(8889)
+                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .body(userVO)
+                .when()
+                .post()
+                .then()
+                .statusCode(201)
+                .extract()
+                .body()
+                .asString();
+
+    }
+
+    @Test
+    @Order(2)
+    void authorization() {
+
+        LoginRequest loginRequest = new LoginRequest(EMAIL, PASSWORD);
+        var accessToken = given()
+                .basePath("/api/user/login")
+                .port(TestConfigs.SERVER_PORT)
+                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .body(loginRequest)
+                .when()
+                .post()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(TokenVO.class)
+                .getAccessToken();
+
+
+        specification = new RequestSpecBuilder()
+                .addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
+                .setBaseUri("http://localhost:" + TestConfigs.SERVER_PORT)
+                .setBasePath("/api/personalizedWorkout")
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
+    }
+
+
+
+    @Test
+    @Order(3)
     void givenPersonalizedWorkoutTrainingObject_when_CreatePersonalizedWorkoutTraining_ShouldReturnAPersonalizedWorkoutTrainingObject() throws IOException {
 
         var content = given().spec(specification)
@@ -117,7 +175,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
     }
 
     @Test
-    @Order(2)
+    @Order(4)
     void givenPersonalizedWorkoutTrainingObject_when_FindPersonalizedWorkoutTrainingById_ShouldReturnAPersonalizedWorkoutTrainingObject() throws JsonProcessingException {
 
         var content = given().spec(specification)
@@ -151,7 +209,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     void givenPersonalizedWorkoutTrainingList_when_FindAllPersonalizedWorkoutTraining_ShouldReturnAPersonalizedWorkoutTrainingList() throws JsonProcessingException {
 
         var content = given().spec(specification)
@@ -164,7 +222,8 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
                 .asString();
 
         PaginatedResponse<PersonalizedWorkoutTrainingVO> paginatedResponse =
-                objectMapper.readValue(content, new TypeReference<PaginatedResponse<PersonalizedWorkoutTrainingVO>>() {});
+                objectMapper.readValue(content, new TypeReference<PaginatedResponse<PersonalizedWorkoutTrainingVO>>() {
+                });
 
         List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOList = paginatedResponse.getContent();
         PersonalizedWorkoutTrainingVO personalizedWorkoutTrainingVOListFirst = personalizedWorkoutTrainingVOList.getFirst();
@@ -189,7 +248,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     void GivenPersonalizedWorkoutTrainingObject_when_FindPersonalizedWorkoutTrainingByMuscle_ShouldReturnAPersonalizedWorkoutTrainingList() throws IOException {
 
         var content = given().spec(specification)
@@ -207,7 +266,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
                 objectMapper.readValue(content, PersonalizedWorkoutTrainingVO[].class);
 
         List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOList = Arrays.asList(createdPersonalizedWorkoutTrainingVO);
-        
+
         personalizedWorkoutTrainingVO = personalizedWorkoutTrainingVOList.getFirst();
 
         Assertions.assertNotNull(personalizedWorkoutTrainingVO);
@@ -227,7 +286,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
     }
 
     @Test
-    @Order(5)
+    @Order(7)
     void GivenPersonalizedWorkoutTrainingObject_when_FindPersonalizedWorkoutTrainingByDifficultLevel_ShouldReturnAPersonalizedWorkoutTrainingList() throws IOException {
 
         var content = given().spec(specification)
@@ -265,7 +324,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
     }
 
     @Test
-    @Order(6)
+    @Order(8)
     void GivenPersonalizedWorkoutTrainingObject_when_FindPersonalizedWorkoutTrainingByName_ShouldReturnAPersonalizedWorkoutTrainingList() throws IOException {
 
         var content = given().spec(specification)
@@ -304,7 +363,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
     }
 
     @Test
-    @Order(7)
+    @Order(9)
     void GivenPersonalizedWorkoutTrainingObject_when_UpdatePersonalizedWorkoutTraining_ShouldReturnAPersonalizedWorkoutTrainingObject() throws IOException {
 
         personalizedWorkoutTrainingVO.setRepetitions(50);
@@ -340,7 +399,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
         assertEquals(MUSCLE_GROUPS, personalizedWorkoutTrainingVO.getWorkoutExerciseEntity().getMuscleGroups());
     }
 
-    @Order(8)
+    @Order(10)
     @Test
     void givenPersonalizedWorkoutExercise_when_delete_ShouldReturnNoContent() {
 
@@ -354,4 +413,4 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
     }
 
 
-    }
+}
