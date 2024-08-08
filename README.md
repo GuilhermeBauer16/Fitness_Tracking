@@ -41,10 +41,18 @@ In that project, I learned how to create a login system using Spring Security an
 
 
 ### Workout Exercise
-* Addition of cart shopping item divided between:    
-  * product.
-  * quantity.
-   
+* Addition of workout exercise divided between:    
+* ```dotworkout
+  {
+    "name": "push-up",
+    "description": "A push-up is a common calisthenics exercise beginning from the prone position.",
+    "caloriesBurned": 50,
+    "exerciseType": "STRENGTH",
+    "equipmentNeeded": "None",
+    "difficultyLevel": "BEGINNER",
+    "muscleGroups": ["CHEST"]}
+    ```
+ 
 * Updating of workout exercise.     
   
 * Deletion of workout exercise.
@@ -54,13 +62,18 @@ In that project, I learned how to create a login system using Spring Security an
 
 ### Personalized Workout exercise
 
-* Addition of product divided between:    
-  * name.
-  * price.
-  * description.
-  * category.
-  * branch.
-  * quantity.
+* Addition of personalized workoutexercise divided between:    
+* ```dotworkout
+  {
+        {
+        "workoutExerciseEntity": {
+            "id": "434a16b3-2bc1-4946-abcb-9227da4ca58c"(ensure of that ID is already registrated)
+        },
+        "repetitions": 4,
+        "series": 5,
+        "weight": 0.0
+    }
+    ```
    
 * Updating of personalized workout exercise.     
   
@@ -72,7 +85,7 @@ In that project, I learned how to create a login system using Spring Security an
 
 * Find personalized workout exercise by difficult level.
 
-* Find personalized workout exercise by
+* Find personalized workout exercise by name
 
 ## Docker 
 
@@ -86,13 +99,12 @@ docker push guilhermebauer/fitness_tracking_status:latest
 * but remember for the project work is need to have a archive called `.env` in your machine.
 
 ```dotenv
+DB_NAME=local_database
 DB_USERNAME=root
 DB_PASSWORD=local_password
-DB_NAME=local_db
-DB_PORT=3307
-DB_HOST=localhost
-SECRET_KEY=localhost
-FISCAL_PORT=8001
+DB_PORT=3308
+SECRET_KEY=local_secret
+EXPIRE_LENGTH=3600000
 ``` 
 
 ## Swagger
