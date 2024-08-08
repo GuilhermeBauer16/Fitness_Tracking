@@ -26,7 +26,7 @@ services:
 
   fitness_tracking:
 
-    image: guilhermebauer/fitness_tracking_status
+    image: guilhermebauer/fitness_tracking_status:latest
     container_name: fitness_tracking_status
 #    build: .
 #
