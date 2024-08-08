@@ -57,7 +57,7 @@ public class UserControllerTest extends AbstractionIntegrationTest {
 
     @Test
     @Order(1)
-    void signUp() throws JsonProcessingException {
+    void givenUserVo_whenSignIn_ShouldReturnAUserResponseObject() throws JsonProcessingException {
 
         UserVO userVO = new UserVO(ID, USER_NAME, EMAIL, PASSWORD, USER_PROFILE);
         String content = given()
@@ -83,7 +83,7 @@ public class UserControllerTest extends AbstractionIntegrationTest {
 
     @Test
     @Order(2)
-    void authorization() {
+    void givenLoginRequest_whenLogIn_ShouldReturnAUserResponseObject() {
 
         LoginRequest loginRequest = new LoginRequest(EMAIL, PASSWORD);
         var accessToken = given()
