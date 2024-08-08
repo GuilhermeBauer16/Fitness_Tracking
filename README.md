@@ -52,7 +52,8 @@ In that project, I learned how to create a login system using Spring Security an
 * Viewing registered workout exercise.
 
 
-### Product
+### Personalized Workout exercise
+
 * Addition of product divided between:    
   * name.
   * price.
@@ -61,24 +62,17 @@ In that project, I learned how to create a login system using Spring Security an
   * branch.
   * quantity.
    
-* Registered product edition.     
+* Updating of personalized workout exercise.     
   
-* Deletion of product.
+* Deletion of personalized workout exercise.
 
-* Viewing registered product.
+* Viewing registered personalized workout exercise.
 
- ### Category
+* Find personalized workout exercise by muscle group.
 
-* Addition of category.   
-  
-  
-* Registered category edition.     
-  
-* Deletion of category.
+* Find personalized workout exercise by difficult level.
 
-* Viewing registered category.
-
-* Viewing registered category.
+* Find personalized workout exercise by
 
 ## Docker 
 
