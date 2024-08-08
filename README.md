@@ -84,9 +84,16 @@ In that project, I learned how to create a login system using Spring Security an
 * <span style="color:red;"> But remember, for Docker to work, you need to have Docker installed on your machine. Here is the link to the official documentation to install Docker: [Docker Installation Guide](https://docs.docker.com/get-docker/)</span>
 
 * but remember for the project work is need to have a archive called `.env` in your machine.
-* Example:
-* 
-* 
+
+```dotenv
+DB_USERNAME=root
+DB_PASSWORD=local_password
+DB_NAME=local_db
+DB_PORT=3307
+DB_HOST=localhost
+SECRET_KEY=localhost
+FISCAL_PORT=8001
+``` 
 
 ## Swagger
 
