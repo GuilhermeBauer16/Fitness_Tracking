@@ -22,7 +22,10 @@ the user will log in and use Fitness tracking functions like a product and addin
 
 ## Learnings 
 
-In that project, I learned how to use Spring Security to create a JWT(JSON Web Token ) token to structure a login system. To encrypt the passwords inside the Database I used the PBKDF2(password-based Key Derivation Function 2). I chose that password encryptor for the capability of customizing and for the security that PBKDF2 has. I also learned how to create unit tests using Mockito and JUnit.
+In that project, I learned how to create a login system using Spring Security and JWT(JSON Web Token ) tokens to structure a login system. I also learned and implemented the unit tests using Mockito and JUnit. To create the integration tests, I went up a MySQL container so the tests are near a production application. I learned how to implement a docker-compose. I implemented a CI/CD in the GitHub main of my project. After the update, that update will reflected in the Docker Hub repository, generating a new latest version.
+
+
+
 
 ## Functionalities
 
