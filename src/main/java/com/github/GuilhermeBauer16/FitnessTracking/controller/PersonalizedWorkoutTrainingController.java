@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/personalizedWorkout")
+@RequestMapping("/api/personalizedWorkout")
 public class PersonalizedWorkoutTrainingController implements PersonalizedWorkoutTrainingControllerContract {
 
     @Autowired

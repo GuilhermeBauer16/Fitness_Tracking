@@ -16,7 +16,8 @@ public class CustomizedResponseEntityExceptionHandler {
 
     @ExceptionHandler({WorkoutExerciseNotFound.class,
             FieldNotFound.class,
-            PersonalizedWorkoutTrainingNotFound.class})
+            PersonalizedWorkoutTrainingNotFound.class,
+            UserNotFoundException.class})
     public final ResponseEntity<ExceptionResponse> handlerNotFoundException(
             Exception ex,
             WebRequest webRequest
@@ -30,7 +31,9 @@ public class CustomizedResponseEntityExceptionHandler {
 
     }
 
-    @ExceptionHandler({UuidUtilsException.class})
+    @ExceptionHandler({UuidUtilsException.class,
+    InvalidTokenException.class,
+    EmailAlreadyRegisterException.class})
     public final ResponseEntity<ExceptionResponse> handlerInternalServerErrorException(
             Exception ex,
             WebRequest webRequest
@@ -40,7 +43,7 @@ public class CustomizedResponseEntityExceptionHandler {
                 webRequest.getDescription(false),
                 new Date()
         );
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
 
     }
 

@@ -16,6 +16,7 @@ public class AbstractionIntegrationTest {
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
+
         static MySQLContainer<?> mySQL = new MySQLContainer<>("mysql:8.0.28");
 
         private static void startContainers() {
@@ -25,8 +26,10 @@ public class AbstractionIntegrationTest {
         private Map<String, String> createConnectionConfiguration() {
             return Map.of("spring.datasource.url", mySQL.getJdbcUrl(),
                     "spring.datasource.username", mySQL.getUsername(),
-                    "spring.datasource.password", mySQL.getPassword()
-            );
+                    "spring.datasource.password", mySQL.getPassword(),
+                    "SECRET_KEY", "123456",
+                    "EXPIRE_LENGTH", "3600000");
+
         }
 
         @Override
