@@ -1,8 +1,9 @@
 # Fitness Tracking  
 
 [![Continuous Integration with Github, Github Actions, and Docker Hub](https://github.com/GuilhermeBauer16/E-commerce/actions/workflows/continuous-integration.yml/badge.svg?event=label)](https://github.com/GuilhermeBauer16/E-commerce/actions/workflows/continuous-integration.yml)
-## Objective                     
-the user will log in and use Fitness tracking functions like a product and adding that product to a cart shopping.          
+## Objective  
+
+the user will log in and use Fitness tracking functions like to personalize the exercise by changing the weight, repetitions, and set. Before the user uses the app, be necessary to sign in or log in.         
     
          
 ## Working example          
@@ -29,24 +30,26 @@ In that project, I learned how to create a login system using Spring Security an
 
 ## Functionalities
 
-
+## User 
 * Login of the user with Spring security authentication.
 
 * Creation of User
 
-* Updating of User
+* Find user by email.
+  
+* Delete user.
 
 
-### Cart shopping 
+### Workout Exercise
 * Addition of cart shopping item divided between:    
   * product.
   * quantity.
    
-* Registered cart shopping edition.     
+* Updating of workout exercise.     
   
-* Deletion of cart shopping.
+* Deletion of workout exercise.
 
-* Viewing registered cart shopping.
+* Viewing registered workout exercise.
 
 
 ### Product
