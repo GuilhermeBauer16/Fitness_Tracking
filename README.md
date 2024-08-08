@@ -32,8 +32,20 @@ In that project, I learned how to create a login system using Spring Security an
 
 ## User 
 * Login of the user with Spring security authentication.
+* ```dotlogin
+    {
+    "email": "john@hotmail.com",(ensure of that email is already registraded)
+    "password": "123456"}
+    ```
 
 * Creation of User
+* ```dotuser
+  {
+  "name": "john",
+  "email": "john@hotmail.com",
+  "password": "123456",
+  "userProfile": "admin"}
+    ```
 
 * Find user by email.
   
@@ -63,7 +75,7 @@ In that project, I learned how to create a login system using Spring Security an
 ### Personalized Workout exercise
 
 * Addition of personalized workoutexercise divided between:    
-* ```dotworkout
+* ```dotPersonalizedWorkout
   {
         {
         "workoutExerciseEntity": {
