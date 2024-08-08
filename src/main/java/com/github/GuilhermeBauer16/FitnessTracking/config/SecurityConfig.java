@@ -9,9 +9,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -35,8 +38,8 @@ public class SecurityConfig {
         JwtTokenFilter customFilter = new JwtTokenFilter(tokenProvider);
 
         return http
-                .httpBasic(basic -> basic.disable())
-                .csrf(csrf -> csrf.disable())
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -44,13 +47,30 @@ public class SecurityConfig {
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers(
                                         "/api/user/signIn",
-                                        "/api/user/login"
+                                        "/api/user/login",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
                                 ).permitAll()
                                 .requestMatchers("/api/workoutExercise/**").hasAuthority("ADMIN")
                                 .requestMatchers("/api/personalizedWorkout/**").hasAnyAuthority("USER", "ADMIN")
                                 .requestMatchers("/api/**").authenticated()
                                 .requestMatchers("/users").denyAll()
                 )
-                .cors(cors -> {})
+                .cors(cors -> {
+                })
                 .build();
-}}
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:8080")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*");
+            }
+        };
+    }
+}
