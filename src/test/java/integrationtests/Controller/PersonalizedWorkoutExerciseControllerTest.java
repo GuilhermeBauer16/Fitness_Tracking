@@ -14,7 +14,6 @@ import com.github.GuilhermeBauer16.FitnessTracking.model.WorkoutExerciseEntity;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.PersonalizedWorkoutTrainingVO;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.TokenVO;
 import com.github.GuilhermeBauer16.FitnessTracking.model.values.UserVO;
-import com.github.GuilhermeBauer16.FitnessTracking.repository.UserRepository;
 import com.github.GuilhermeBauer16.FitnessTracking.repository.WorkoutExerciseRepository;
 import com.github.GuilhermeBauer16.FitnessTracking.request.LoginRequest;
 import com.github.GuilhermeBauer16.FitnessTracking.utils.PaginatedResponse;
@@ -49,8 +48,6 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegrationTest {
 
-    @Autowired
-    UserRepository userRepository;
 
     private static RequestSpecification specification;
     private static ObjectMapper objectMapper;
@@ -222,7 +219,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
                 .asString();
 
         PaginatedResponse<PersonalizedWorkoutTrainingVO> paginatedResponse =
-                objectMapper.readValue(content, new TypeReference<PaginatedResponse<PersonalizedWorkoutTrainingVO>>() {
+                objectMapper.readValue(content, new TypeReference<>() {
                 });
 
         List<PersonalizedWorkoutTrainingVO> personalizedWorkoutTrainingVOList = paginatedResponse.getContent();

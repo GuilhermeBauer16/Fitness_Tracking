@@ -77,7 +77,7 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
 
     @Test
     @Order(1)
-    void signUp() {
+    void signUp(){
 
         UserVO userVO = new UserVO(ID, USER_NAME, EMAIL, PASSWORD, USER_PROFILE);
         given()
@@ -92,6 +92,8 @@ class WorkoutExerciseControllerIntegrationTest extends AbstractionIntegrationTes
                 .extract()
                 .body()
                 .asString();
+
+
 
     }
 
