@@ -8,17 +8,17 @@ the user will log in and use Fitness tracking functions like to personalize the 
          
 ## Working example          
 
-![Screenshot from 2024-03-24 18-40-13](https://github.com/GuilhermeBauer16/E-commerce/assets/123701893/13931538-892c-4ac8-87ba-a28e28c52207)
-
+![Screenshot from 2024-08-08 19-16-00](https://github.com/user-attachments/assets/f44b39c3-f804-45ea-84be-36832629d856)
 
 
 ## Sending 
-![Screenshot from 2024-03-24 17-37-19](https://github.com/GuilhermeBauer16/E-commerce/assets/123701893/41fe1c6b-12ba-488c-b481-80e5fa305ff8)
+
+![Screenshot from 2024-08-08 19-18-27](https://github.com/user-attachments/assets/4c635e45-a7bd-450e-b6a4-77ba2e96b3a5)
+
 
 ## Response 
 
-![Screenshot from 2024-03-24 17-39-18](https://github.com/GuilhermeBauer16/E-commerce/assets/123701893/3d103913-5cb9-4ec8-aa44-e8eb9f5f5edf)
-
+![Screenshot from 2024-08-08 19-19-11](https://github.com/user-attachments/assets/ec419e37-ee13-4782-8368-05f56a50b9e9)
 
 
 ## Learnings 
@@ -108,6 +108,9 @@ docker push guilhermebauer/fitness_tracking_status:latest
 
 * <span style="color:red;"> But remember, for Docker to work, you need to have Docker installed on your machine. Here is the link to the official documentation to install Docker: [Docker Installation Guide](https://docs.docker.com/get-docker/)</span>
 
+
+## Configuration of the environment
+
 * but remember for the project work is need to have a archive called `.env` in your machine.
 
 ```dotenv
@@ -117,7 +120,7 @@ DB_PASSWORD=local_password
 DB_PORT=3308
 SECRET_KEY=local_secret
 EXPIRE_LENGTH=3600000
-``` 
+```
 
 ## Swagger
 
