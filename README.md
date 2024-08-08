@@ -84,9 +84,8 @@ In that project, I learned how to create a login system using Spring Security an
 
 * You can pull the Docker image using this command:
  ```dotdocker
-docker push guilhermebauer/fitness_tracking_status:latest```
-
-## Installation
+docker push guilhermebauer/fitness_tracking_status:latest
+```
 
 * <span style="color:red;"> But remember, for Docker to work, you need to have Docker installed on your machine. Here is the link to the official documentation to install Docker: [Docker Installation Guide](https://docs.docker.com/get-docker/)</span>
 
