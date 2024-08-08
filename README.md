@@ -76,9 +76,14 @@ In that project, I learned how to use Spring Security to create a JWT(JSON Web T
 
 ## Docker 
 
-* You can pull the Docker image using this command: `docker pull guilhermebauer/ecommerce_app:latest`
+* You can pull the Docker image using this command: `docker push guilhermebauer/fitness_tracking_status:latest`
   
 * <span style="color:red;"> But remember, for Docker to work, you need to have Docker installed on your machine. Here is the link to the official documentation to install Docker: [Docker Installation Guide](https://docs.docker.com/get-docker/)</span>
+
+* but remember for the project work is need to have a archive called `.env` in your machine.
+* Example:
+* 
+* 
 
 ## Swagger
 
