@@ -92,7 +92,7 @@ public class PersonalizedWorkoutExerciseControllerTest extends AbstractionIntegr
 
         UserVO userVO = new UserVO(ID, USER_NAME, EMAIL, PASSWORD, USER_PROFILE);
         given()
-                .basePath("/api/user/signIn")
+                .basePath("/api/user/signUp")
                 .port(8889)
                 .contentType(TestConfigs.CONTENT_TYPE_JSON)
                 .body(userVO)

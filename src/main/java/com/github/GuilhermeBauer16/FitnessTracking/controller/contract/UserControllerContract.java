@@ -37,7 +37,7 @@ public interface UserControllerContract {
 
      */
 
-    @PostMapping(value="/signIn", consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(value="/signUp", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Register a new user", description = "Registers a new user and returns the created user.")
     @ApiResponses(value = {

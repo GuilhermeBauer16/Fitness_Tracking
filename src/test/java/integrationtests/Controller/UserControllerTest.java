@@ -57,11 +57,11 @@ public class UserControllerTest extends AbstractionIntegrationTest {
 
     @Test
     @Order(1)
-    void givenUserVo_whenSignIn_ShouldReturnAUserResponseObject() throws JsonProcessingException {
+    void givenUserVo_whenSignUp_ShouldReturnAUserResponseObject() throws JsonProcessingException {
 
         UserVO userVO = new UserVO(ID, USER_NAME, EMAIL, PASSWORD, USER_PROFILE);
         String content = given()
-                .basePath("/api/user/signIn")
+                .basePath("/api/user/signUp")
                 .port(8889)
                 .contentType(TestConfigs.CONTENT_TYPE_JSON)
                 .body(userVO)
