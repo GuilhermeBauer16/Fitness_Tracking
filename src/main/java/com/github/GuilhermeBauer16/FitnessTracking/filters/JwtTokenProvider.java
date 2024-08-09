@@ -33,8 +33,7 @@ public class JwtTokenProvider {
     @Value("${SECRET_KEY}")
     private String secretKey;
 
-    @Value("${EXPIRE_LENGTH}")
-    private long validityInMilliseconds;
+    private static final long VALIDITY_IN_MILLISECONDS = 3600000;
 
     private final UserDetailsService userDetailsService;
 
@@ -54,7 +53,7 @@ public class JwtTokenProvider {
 
     public TokenVO createAccessToken(String username, UserProfile userProfile) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date validity = new Date(now.getTime() + VALIDITY_IN_MILLISECONDS);
         String accessToken = getRefreshToken(username, userProfile, now, validity);
         String refreshToken = getRefreshToken(username, userProfile, now);
         return new TokenVO(username, true, now, validity, accessToken, refreshToken);
@@ -89,7 +88,7 @@ public class JwtTokenProvider {
     }
 
     private String getRefreshToken(String username, UserProfile userprofile, Date now) {
-        Date validityRefreshToken = new Date(now.getTime() + (validityInMilliseconds * 3));
+        Date validityRefreshToken = new Date(now.getTime() + (VALIDITY_IN_MILLISECONDS * 3));
         return JWT.create()
                 .withClaim(ROLES, userprofile.getProfile())
                 .withIssuedAt(now)
