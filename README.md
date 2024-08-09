@@ -1,6 +1,6 @@
 # Fitness Tracking  
 
-[![Continuous Integration with GitHub, GitHub Actions, and Docker Hub](https://github.com/GuilhermeBauer16/E-commerce/actions/workflows/continuous-integration.yml/badge.svg?event=label)](https://github.com/GuilhermeBauer16/E-commerce/actions/workflows/continuous-integration.yml)
+[![Continuous Integration with Github, Github Actions, and Docker Hub](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/docker-image.yml)
 
 ## Objective  
 
@@ -113,7 +113,6 @@ DB_USERNAME=root
 DB_PASSWORD=local_password
 DB_PORT=3308
 SECRET_KEY=local_secret
-EXPIRE_LENGTH=3600000
 ```
 
 ## Swagger
