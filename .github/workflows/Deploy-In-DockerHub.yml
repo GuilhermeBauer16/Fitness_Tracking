@@ -33,7 +33,6 @@ jobs:
 
         - name: Restore Maven Cache
           id: cache
-          if: ${{ inputs.use-cache }}
           uses: actions/cache@v3
           with:
             path: ~/.m2/repository
@@ -44,26 +43,11 @@ jobs:
           run: ./mvnw clean install
           if: ${{ steps.cache.outputs.cache-hit != 'true' }}
     
-        # Run tests
         - name: Run Tests
           run: ./mvnw test
-        
-        # Build the package
+      
         - name: Build Jar Package
           run: ./mvnw package
-
-    # steps:
-    # - uses: actions/checkout@v4
-
-    # - name: Setup Java JDK
-    #   uses: actions/setup-java@v4.2.1
-    #   with:
-    #     java-version: '21'
-    #     distribution: 'adopt'
-    #     cache: maven
-
-    # - name: Build Application Jar
-    #   run: mvn clean package
 
         - name: Login to DockerHub
           uses: docker/login-action@v1
