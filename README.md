@@ -1,4 +1,6 @@
-# Fitness Tracking  
+# Fitness Tracking 
+[![Deploy in Docker Hub](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/Deploy-In-DockerHub.yml/badge.svg)](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/Deploy-In-DockerHub.yml) 
+[![CI-Pull-Request](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/CI-Pull-Request.yml/badge.svg)](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/CI-Pull-Request.yml)
 
 
 ## Objective  
