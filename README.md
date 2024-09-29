@@ -3,7 +3,7 @@
 [![Deploy in Docker Hub](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/Deploy-In-DockerHub.yml/badge.svg)](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/Deploy-In-DockerHub.yml) 
 [![CI-Pull-Request](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/CI-Pull-Request.yml/badge.svg)](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/CI-Pull-Request.yml)
 
-## Objective  
+## Objective     
 
 Users will log in and use Fitness Tracking functions to personalize exercises by adjusting the weight, repetitions, and sets. Before using the app, users need to sign up or log in.  
 
