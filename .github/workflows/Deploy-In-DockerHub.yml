@@ -1,16 +1,9 @@
-name: Continuous Integration with Github, Github Actions, and Docker Hub
+name: Deploy in Docker Hub
 
 on:
   push:
     branches: "main"
-
-  workflow_dispatch:
-    inputs:
-      use-cache:
-        description: "Whether to execute cache step"
-        type: boolean
-        default: true
-    
+  
 
 jobs:
   build:
@@ -59,7 +52,8 @@ jobs:
           uses: docker/build-push-action@v4
           with:
             push: true
-            tags: guilhermebauer/fitness_tracking_status:latest
+            # tags: guilhermebauer/fitness_tracking_status:latest
+            tags: ${{ secrets.DOCKER_USERNAME }}/fitness_tracking_status:latest
             context: .
             file: ./Dockerfile
 
