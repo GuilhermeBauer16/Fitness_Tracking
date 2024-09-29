@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
     
 env:
-  BRANCH: ${{ github.base_ref }} 
+  BRANCH: ${{ github.ref }} 
 
 jobs:
   check-current-branch:
