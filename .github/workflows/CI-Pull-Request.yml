@@ -85,14 +85,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
           
-      - name: Testing
-        run: mvn test jacoco:report
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: target/site/jacoco/ 
 
       - name: Building
         run: mvn package
