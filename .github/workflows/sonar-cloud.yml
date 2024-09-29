@@ -30,10 +30,4 @@ jobs:
           SONAR_URL: https://sonarcloud.io
 
         run: |
-          mvn sonar:sonar \
-            -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
-            -Dsonar.organization="${SONAR_ORGANIZATION}" \
-            -Dsonar.host.url="${SONAR_URL}" \
-            -Dsonar.login="${SONAR_TOKEN}" \
-            -Dsonar.jacoco.reportPaths=target/jacoco.exec \
-            -Dsonar.coverage.exclusions=**/*Test.java
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${SONAR_TOKEN}
