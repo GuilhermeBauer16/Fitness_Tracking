@@ -52,7 +52,8 @@ jobs:
           uses: docker/build-push-action@v4
           with:
             push: true
-            tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+            tags: ${{ secrets.DOCKER_USERNAME }}/fitness_tracking_status:latest
+            # tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
             context: .
             file: ./Dockerfile
 
