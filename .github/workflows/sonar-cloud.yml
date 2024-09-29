@@ -1,4 +1,4 @@
-name: SonarCloud scan
+name: SonarCloud
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -19,17 +19,21 @@ jobs:
           cache: 'maven'
           cache-dependency-path: 'pom.xml'
 
+      - name: Build with JaCoCo
+        run: mvn clean verify
+
       - name: SonarCloud Scan with Maven
-        env: 
+        env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
           SONAR_URL: https://sonarcloud.io
-          
+
         run: |
-          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          mvn sonar:sonar \
             -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
             -Dsonar.organization="${SONAR_ORGANIZATION}" \
             -Dsonar.host.url="${SONAR_URL}" \
             -Dsonar.login="${SONAR_TOKEN}" \
-            -Dsonar.exclusions=**/*.test.java
+            -Dsonar.jacoco.reportPaths=target/jacoco.exec \
+            -Dsonar.coverage.exclusions=**/*Test.java
