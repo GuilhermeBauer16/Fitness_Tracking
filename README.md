@@ -1,6 +1,5 @@
 # Fitness Tracking  
 
-[![Continuous Integration with Github, Github Actions, and Docker Hub](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/docker-image.yml)
 
 ## Objective  
 

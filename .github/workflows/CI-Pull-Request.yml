@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
     
 env:
-  BRANCH: ${{ github.ref_name }}  
+  BRANCH: ${{ github.head_ref }}  
 
 jobs:
   check-current-branch:
@@ -81,7 +81,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ${{ needs.install-deps.outputs.deps-cache-key }}  
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
           
       - name: Testing
         run: mvn test jacoco:report
