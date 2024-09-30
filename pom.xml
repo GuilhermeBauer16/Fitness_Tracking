@@ -30,11 +30,32 @@
         <java.version>21</java.version>
         <springdoc.version>2.3.0</springdoc.version>
         <model-mapper.version>3.1.1</model-mapper.version>
-        <jacoco.plugin.version>0.8.9</jacoco.plugin.version>
+        <jacoco.plugin.version>0.8.10</jacoco.plugin.version>
         <testcontainers.version>1.19.8</testcontainers.version>
 
+
+        <sonar.projectKey>GuilhermeBauer16_Fitness_Tracking</sonar.projectKey>
         <sonar.organization>guilhermebauer16</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+
+
+        <!-- properties for JaCoCo -->
+        <jacoco.version>0.8.10</jacoco.version>
+        <sonar.coverage.exclusions>
+            **/model/**,
+            **/adapter/**,
+            **/response/**,
+            **/request/**,
+            **/config/**,
+            **/controller/**,
+            **/enums/**,
+            **/exception/**,
+            **/mapper/**,
+            **/factory/**,
+            **/utils/**,
+        </sonar.coverage.exclusions>
 
     </properties>
     <dependencies>
@@ -56,7 +77,6 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 
-
         <!-- Database dependencies-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -69,7 +89,6 @@
             <scope>runtime</scope>
         </dependency>
 
-
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
@@ -80,27 +99,22 @@
             <artifactId>flyway-mysql</artifactId>
         </dependency>
 
-
         <!-- Model Mapper dependency -->
-
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>${model-mapper.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -108,7 +122,6 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -128,7 +141,6 @@
             <scope>test</scope>
         </dependency>
 
-
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mysql</artifactId>
@@ -141,7 +153,6 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-
     </dependencies>
 
     <build>
@@ -151,13 +162,17 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
+            </plugin>
 
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.plugin.version}</version>
+                <version>0.8.10</version>
                 <executions>
                     <execution>
-                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
@@ -170,9 +185,42 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+                    <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+                </configuration>
             </plugin>
-
         </plugins>
     </build>
+
+    <!-- Profile for Coverage -->
+    <profiles>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
