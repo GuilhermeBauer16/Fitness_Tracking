@@ -32,6 +32,10 @@
         <model-mapper.version>3.1.1</model-mapper.version>
         <jacoco.plugin.version>0.8.9</jacoco.plugin.version>
         <testcontainers.version>1.19.8</testcontainers.version>
+
+        <sonar.organization>guilhermebauer16</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
     </properties>
     <dependencies>
 
