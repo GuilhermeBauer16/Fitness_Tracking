@@ -30,11 +30,29 @@
         <java.version>21</java.version>
         <springdoc.version>2.3.0</springdoc.version>
         <model-mapper.version>3.1.1</model-mapper.version>
-        <jacoco.plugin.version>0.8.9</jacoco.plugin.version>
+        <jacoco.plugin.version>0.8.10</jacoco.plugin.version>
         <testcontainers.version>1.19.8</testcontainers.version>
 
         <sonar.organization>guilhermebauer16</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+
+        <!-- properties for JaCoCo -->
+        <jacoco.version>0.8.10</jacoco.version>
+        <sonar.coverage.exclusions>
+            **/model/**,
+            **/adapter/**,
+            **/response/**,
+            **/request/**,
+            **/config/**,
+            **/controller/**,
+            **/enums/**,
+            **/exception/**,
+            **/mapper/**,
+            **/factory/**,
+            **/utils/**,
+        </sonar.coverage.exclusions>
 
     </properties>
     <dependencies>
@@ -151,7 +169,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.plugin.version}</version>
@@ -162,15 +184,22 @@
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+                    <!-- attached to Maven test phase -->
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <formats>
+                                <format>XML</format>
+                            </formats>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+
 
         </plugins>
     </build>
