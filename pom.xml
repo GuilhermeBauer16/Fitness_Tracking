@@ -37,7 +37,7 @@
         <sonar.projectKey>GuilhermeBauer16_Fitness_Tracking</sonar.projectKey>
         <sonar.organization>guilhermebauer16</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/
         </sonar.coverage.jacoco.xmlReportPaths>
 
 
@@ -156,6 +156,17 @@
     </dependencies>
 
     <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>4.0.0.4121</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
