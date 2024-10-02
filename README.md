@@ -8,7 +8,7 @@
 ## Objective  
 
 Users will log in and use Fitness Tracking functions to personalize exercises by adjusting the weight, repetitions, and sets. Before using the app, users need to sign up or log in.  
-
+      
 ## Working Example  
 
 ![Screenshot from 2024-08-08 19-16-00](https://github.com/user-attachments/assets/f44b39c3-f804-45ea-84be-36832629d856)
