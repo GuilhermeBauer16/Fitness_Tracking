@@ -3,9 +3,9 @@ name: CI-Pull-Request
 on:
   pull_request:
     branches: [ "main" ]
-    
+
 env:
-  BRANCH: ${{ github.head_ref }}  
+  BRANCH: ${{ github.head_ref }}
 
 jobs:
   check-current-branch:
@@ -18,8 +18,8 @@ jobs:
       - name: Check branch
         run: |
           if [[ "${{ env.BRANCH }}" != "develop" ]]; then
-            echo "Please verify if the current branch is 'develop'."
-            exit 1
+          echo "ERROR: Please verify if the current branch is 'develop'."
+          exit 1 
           fi
 
   checkout-code:
@@ -30,16 +30,16 @@ jobs:
       deps-cache-key: ${{ steps.cache-key.outputs.cache_key }}
     
     steps:
-      - name: Checkout code 
+      - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
           cache: 'maven'
-          cache-dependency-path: 'pom.xml' 
-      
+          cache-dependency-path: 'pom.xml'
+
       - name: Testing
         run: mvn test
