@@ -36,13 +36,11 @@
         <sonar.projectKey>GuilhermeBauer16_Fitness_Tracking</sonar.projectKey>
         <sonar.organization>guilhermebauer16</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.basedir}/build/reports/jacoco/test/jacocoTestReport.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
-
-
-        <!-- properties for JaCoCo -->
         <jacoco.version>0.8.10</jacoco.version>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.language>java</sonar.language>
         <sonar.coverage.exclusions>
             **/model/**,
             **/adapter/**,
@@ -60,6 +58,12 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco.version}</version>
+        </dependency>
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -157,17 +161,16 @@
 
     <build>
 
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>4.0.0.4121</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
         <plugins>
+
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
+            </plugin>
+
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -177,20 +180,41 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <execution>
+                        <id>jacoco-initialize</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>report</id>
-                        <phase>test</phase>
+                        <id>jacoco-site</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
+<!--                    <execution>-->
+<!--                        <id>jacoco-check</id>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--&lt;!&ndash;                        <configuration>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <rules>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <rule>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <element>PACKAGE</element>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <limits>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <limit>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <counter>LINE</counter>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <value>COVEREDRATIO</value>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <minimum>0.20</minimum>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        </limit>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </limits>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </rule>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </rules>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </configuration>&ndash;&gt;-->
+<!--                    </execution>-->
                 </executions>
             </plugin>
 
@@ -198,34 +222,7 @@
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>coverage</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.10</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+
 
 
 </project>
