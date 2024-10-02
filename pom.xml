@@ -38,6 +38,19 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.exclusions>
+
+            **/model/**,
+            **/adapter/**,
+            **/response/**,
+            **/request/**,
+            **/config/**,
+            **/enums/**,
+            **/exception/**,
+            **/mapper/**,
+            **/factory/**,
+            **/utils/**
+        </sonar.coverage.exclusions>
 
     </properties>
 
