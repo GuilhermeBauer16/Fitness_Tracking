@@ -2,6 +2,8 @@
 
 [![Deploy in Docker Hub](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/Deploy-In-DockerHub.yml/badge.svg)](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/Deploy-In-DockerHub.yml) 
 [![CI-Pull-Request](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/CI-Pull-Request.yml/badge.svg)](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/CI-Pull-Request.yml)
+[![SonarCloud](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/sonar-cloud.yml/badge.svg)](https://github.com/GuilhermeBauer16/Fitness_Tracking/actions/workflows/sonar-cloud.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=GuilhermeBauer16_Fitness_Tracking&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=GuilhermeBauer16_Fitness_Tracking)
 
 ## Objective  
 
