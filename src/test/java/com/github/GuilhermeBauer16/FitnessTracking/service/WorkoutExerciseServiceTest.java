@@ -168,6 +168,7 @@ class WorkoutExerciseServiceTest {
 
     }
 
+
     @Test
     void testUpdateWorkoutExercise_WhenWorkoutExerciseNotExistsInTheDatabase_ShouldWorkoutExerciseNotFound() {
 
@@ -264,7 +265,6 @@ class WorkoutExerciseServiceTest {
     }
 
 
-
     @Test
     void testWorkoutExercise_When_FindAll_ShouldReturnWorkoutExerciseList() {
 
@@ -274,7 +274,7 @@ class WorkoutExerciseServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 10);
         Page<WorkoutExerciseVO> workoutExerciseVOPage = service.findAll(pageRequest);
 
-        verify(repository,times(1)).findAll(any(Pageable.class));
+        verify(repository, times(1)).findAll(any(Pageable.class));
 
         assertNotNull(workoutExerciseVOPage);
 
@@ -290,7 +290,7 @@ class WorkoutExerciseServiceTest {
     }
 
     @Test
-    void testDelete_WhenDeletingWorkoutExercise_thenDoNothing(){
+    void testDelete_WhenDeletingWorkoutExercise_thenDoNothing() {
 
         when(repository.findById(workoutExerciseEntity.getId())).thenReturn(Optional.of(workoutExerciseEntity));
         doNothing().when(repository).delete(workoutExerciseEntity);
@@ -332,8 +332,6 @@ class WorkoutExerciseServiceTest {
         assertEquals(WorkoutExerciseNotFound.ERROR.formatErrorMessage(WORKOUT_EXERCISE_NOT_FOUND_MESSAGE), exception.getMessage());
 
     }
-
-
 
 
 }

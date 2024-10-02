@@ -36,34 +36,14 @@
         <sonar.projectKey>GuilhermeBauer16_Fitness_Tracking</sonar.projectKey>
         <sonar.organization>guilhermebauer16</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <jacoco.version>0.8.10</jacoco.version>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.language>java</sonar.language>
-        <sonar.coverage.exclusions>
-            **/model/**,
-            **/adapter/**,
-            **/response/**,
-            **/request/**,
-            **/config/**,
-            **/controller/**,
-            **/enums/**,
-            **/exception/**,
-            **/mapper/**,
-            **/factory/**,
-            **/utils/**,
-        </sonar.coverage.exclusions>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
 
     </properties>
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>${jacoco.version}</version>
-        </dependency>
+
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -161,68 +141,65 @@
 
     <build>
 
-        <plugins>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <excludes>
+                    <exclude>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </exclude>
+                </excludes>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-maven-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+                <execution>
+                    <id>integration-test</id>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        <!-- Include JaCoCo plugin -->
+        <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>4.0.0.4121</version>
+        </plugin>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.10</version>
+            <executions>
+                <execution>
+                    <id>prepare-agent</id>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <!-- attached to Maven test phase -->
+                <execution>
+                    <id>report</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                    <configuration>
+                        <formats>
+                            <format>XML</format>
+                        </formats>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
 
-
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>4.0.0.4121</version>
-            </plugin>
-
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
-
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-                <executions>
-                    <execution>
-                        <id>jacoco-initialize</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-site</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-<!--                    <execution>-->
-<!--                        <id>jacoco-check</id>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--&lt;!&ndash;                        <configuration>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <rules>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <rule>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    <element>PACKAGE</element>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    <limits>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <limit>&ndash;&gt;-->
-<!--&lt;!&ndash;                                            <counter>LINE</counter>&ndash;&gt;-->
-<!--&lt;!&ndash;                                            <value>COVEREDRATIO</value>&ndash;&gt;-->
-<!--&lt;!&ndash;                                            <minimum>0.20</minimum>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        </limit>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    </limits>&ndash;&gt;-->
-<!--&lt;!&ndash;                                </rule>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </rules>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </configuration>&ndash;&gt;-->
-<!--                    </execution>-->
-                </executions>
-            </plugin>
-
-
-        </plugins>
     </build>
-
-
-
-
 </project>
