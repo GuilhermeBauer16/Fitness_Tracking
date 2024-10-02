@@ -36,7 +36,9 @@
         <sonar.projectKey>GuilhermeBauer16_Fitness_Tracking</sonar.projectKey>
         <sonar.organization>guilhermebauer16</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.basedir}/build/reports/jacoco/test/jacocoTestReport.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
 
 
         <!-- properties for JaCoCo -->
@@ -171,10 +173,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.plugin.version}</version>
+                <version>0.8.10</version>
                 <executions>
                     <execution>
                         <goals>
@@ -183,17 +186,18 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>prepare-package</phase>
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+
+
         </plugins>
     </build>
 
-    <!-- Profiles section -->
     <profiles>
         <profile>
             <id>coverage</id>
@@ -205,21 +209,16 @@
                         <version>0.8.10</version>
                         <executions>
                             <execution>
-                                <id>prepare-agent</id>
                                 <goals>
                                     <goal>prepare-agent</goal>
                                 </goals>
                             </execution>
                             <execution>
                                 <id>report</id>
+                                <phase>test</phase>
                                 <goals>
                                     <goal>report</goal>
                                 </goals>
-                                <configuration>
-                                    <formats>
-                                        <format>XML</format>
-                                    </formats>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -227,5 +226,6 @@
             </build>
         </profile>
     </profiles>
+
 
 </project>
