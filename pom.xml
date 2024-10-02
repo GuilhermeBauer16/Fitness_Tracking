@@ -33,32 +33,29 @@
         <jacoco.plugin.version>0.8.10</jacoco.plugin.version>
         <testcontainers.version>1.19.8</testcontainers.version>
 
-
         <sonar.projectKey>GuilhermeBauer16_Fitness_Tracking</sonar.projectKey>
         <sonar.organization>guilhermebauer16</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
-
-
-        <!-- properties for JaCoCo -->
-        <jacoco.version>0.8.10</jacoco.version>
         <sonar.coverage.exclusions>
+
             **/model/**,
             **/adapter/**,
             **/response/**,
             **/request/**,
             **/config/**,
-            **/controller/**,
             **/enums/**,
             **/exception/**,
             **/mapper/**,
             **/factory/**,
-            **/utils/**,
+            **/utils/**
         </sonar.coverage.exclusions>
 
     </properties>
+
     <dependencies>
+
 
         <!-- Spring Security -->
         <dependency>
@@ -77,7 +74,7 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 
-        <!-- Database dependencies-->
+        <!-- Database dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -156,71 +153,66 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>4.0.0.4121</version>
-            </plugin>
 
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                    <dataFile>${project.build.directory}/jacoco.exec</dataFile>
-                </configuration>
-            </plugin>
-        </plugins>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <excludes>
+                    <exclude>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </exclude>
+                </excludes>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-maven-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+                <execution>
+                    <id>integration-test</id>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        <!-- Include JaCoCo plugin -->
+        <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>4.0.0.4121</version>
+        </plugin>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.10</version>
+            <executions>
+                <execution>
+                    <id>prepare-agent</id>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <!-- attached to Maven test phase -->
+                <execution>
+                    <id>report</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                    <configuration>
+                        <formats>
+                            <format>XML</format>
+                        </formats>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+
     </build>
-
-    <!-- Profile for Coverage -->
-    <profiles>
-        <profile>
-            <id>coverage</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco.plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
 </project>

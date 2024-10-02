@@ -101,6 +101,8 @@ class UserRegisterServiceTest {
 
     }
 
+
+
     @Test
     void testFindByEmail_WhenTheUserIsFindByEmail_ShouldReturnUserResponseObject() {
         try (MockedStatic<ValidatorUtils> mockedValidatorUtils = mockStatic(ValidatorUtils.class)) {
